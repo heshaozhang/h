@@ -1,0 +1,4728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zzzsh专属🤓</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+/* ===== 全局重置与变量 ===== */
+:root {
+  --bg-black: #FFF5F7;
+  --bg-deep: #FFE8EE;
+  --wine-deep: #FFD1DC;
+  --red-main: #FF6B9D;
+  --red-bright: #FF8FB1;
+  --gold: #D4A574;
+  --text-white: #5C3D4E;
+  --text-dim: #9B7A8A;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 107, 157, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFE8EE 50%, #FFF0F3 100%);
+  color: var(--text-white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ===== 右侧固定导航 ===== */
+.side-nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.side-nav a {
+  display: block;
+  padding: 8px 16px;
+  background: rgba(20, 20, 20, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  min-width: 64px;
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+  background: rgba(196, 30, 58, 0.85);
+  border-color: rgba(196, 30, 58, 0.9);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(196, 30, 58, 0.4);
+}
+
+/* ===== 通用板块 ===== */
+.section {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+}
+
+.section-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #D4A574 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+/* ===== 首页 Hero（横屏左图右文） ===== */
+.hero {
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFE0E9 100%);
+  flex-direction: row;
+  text-align: left;
+  overflow: hidden;
+  gap: 40px;
+  padding: 60px 80px 60px 40px;
+}
+
+.hero-image {
+  flex: 1;
+  height: 80vh;
+  max-height: 700px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(255, 107, 157, 0.25);
+  position: relative;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(255, 224, 233, 0.3) 100%);
+  pointer-events: none;
+}
+
+.hero-content {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  padding-left: 20px;
+}
+
+.hero-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8FB1 50%, #D4A574 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 1.2s ease-out;
+}
+
+.hero-name .dot {
+  color: var(--red-main);
+  margin: 0 6px;
+  -webkit-text-fill-color: var(--red-main);
+}
+
+.hero-birthday {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--gold);
+  margin-bottom: 32px;
+  animation: fadeInUp 1.2s ease-out 0.2s both;
+}
+
+.hero-tagline {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  animation: fadeInUp 1.2s ease-out 0.4s both;
+}
+
+/* 倒计时 */
+.countdown {
+  display: flex;
+  justify-content: flex-start;
+  gap: 14px;
+  margin-bottom: 36px;
+  animation: fadeInUp 1.2s ease-out 0.3s both;
+}
+
+.countdown-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.countdown-item {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  padding: 18px 22px;
+  min-width: 90px;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(255, 107, 157, 0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.countdown-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(255, 107, 157, 0.3), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.countdown-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--red-main);
+  line-height: 1;
+}
+
+.countdown-unit {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* 按钮 */
+.hero-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+  animation: fadeInUp 1.2s ease-out 0.5s both;
+}
+
+.btn {
+  padding: 13px 32px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-family: 'Noto Sans SC', sans-serif;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.35s ease;
+  text-decoration: none;
+  display: inline-block;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8FB1 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 24px rgba(255, 107, 157, 0.4);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #FF8FB1 0%, #FF6B9D 100%);
+  box-shadow: 0 8px 30px rgba(255, 107, 157, 0.55);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: rgba(255,255,255,0.6);
+  color: var(--red-main);
+  border-color: var(--red-main);
+}
+
+.btn-outline:hover {
+  background: var(--red-main);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(255, 107, 157, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ===== 简介页 ===== */
+.about {
+  background: linear-gradient(180deg, #FFF5F7 0%, #FFE8EE 100%);
+  flex-direction: column;
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 60px;
+  max-width: 1100px;
+  width: 100%;
+  align-items: start;
+}
+
+.profile-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  border-radius: 20px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(255, 107, 157, 0.12);
+}
+
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FF6B9D, #FF8FB1, #D4A574, #FF8FB1, #FF6B9D);
+}
+
+.profile-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  object-fit: cover;
+  display: block;
+  border: 3px solid #fff;
+  box-shadow: 0 8px 28px rgba(255, 107, 157, 0.35);
+}
+
+.profile-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+
+.profile-en {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 28px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-social {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 107, 157, 0.15);
+}
+
+.social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FF8FB1, #FF6B9D);
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(255, 107, 157, 0.3);
+  cursor: pointer;
+  border: none;
+}
+
+.social-btn:hover {
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 8px 22px rgba(255, 107, 157, 0.45);
+}
+
+.social-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+
+/* ===== 社交平台栏目 ===== */
+.social-section {
+  background: linear-gradient(180deg, #FFF5F7 0%, #FFE0E9 100%);
+  flex-direction: column;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.social-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 28px rgba(255, 107, 157, 0.1);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(255, 107, 157, 0.25);
+  border-color: #FF6B9D;
+}
+
+.social-cover {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+  object-position: 50% 30%;
+  display: block;
+  background: #FFE8EE;
+  transition: transform 0.4s ease;
+}
+
+.social-cover-zoom {
+  transform: scale(1.25);
+}
+
+.social-card:hover .social-cover {
+  transform: scale(1.05);
+}
+
+.social-card:hover .social-cover-zoom {
+  transform: scale(1.3);
+}
+
+.social-cover-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.social-cover-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+.social-platform-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(8px);
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.social-platform-badge svg {
+  width: 16px;
+  height: 16px;
+  fill: #FF6B9D;
+}
+
+.social-platform-badge span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5C3D4E;
+  letter-spacing: 1px;
+}
+
+.social-body {
+  padding: 18px 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-account {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.social-preview {
+  font-size: 13px;
+  color: var(--text-white);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.social-stats {
+  display: flex;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 107, 157, 0.1);
+}
+
+.social-stat {
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.social-stat strong {
+  color: #FF6B9D;
+  font-weight: 600;
+}
+
+.social-action {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: #FF6B9D;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 107, 157, 0.08);
+  transition: all 0.3s ease;
+}
+
+.social-card:hover .social-action {
+  background: rgba(255, 107, 157, 0.15);
+  letter-spacing: 2px;
+}
+
+/* 预览作品 */
+.social-preview-works {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 107, 157, 0.1);
+}
+
+.social-preview-title {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.social-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  border-radius: 8px;
+}
+
+.social-preview-item:hover {
+  background: rgba(255, 107, 157, 0.06);
+}
+
+.social-preview-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #FFE8EE;
+}
+
+.social-preview-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.social-preview-name {
+  font-size: 12px;
+  color: var(--text-white);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.social-preview-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 107, 157, 0.1);
+}
+
+.info-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.info-value {
+  font-size: 14px;
+  color: var(--text-white);
+  font-weight: 500;
+}
+
+.about-text {
+  padding-top: 8px;
+}
+
+.about-bio {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  text-align: justify;
+}
+
+.about-bio strong {
+  color: var(--text-white);
+  font-weight: 500;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, #FF6B9D, #D4A574, transparent);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -27px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FF6B9D;
+  box-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+  border: 2px solid #fff;
+}
+
+.timeline-year {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.timeline-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ===== 简介页细分板块 ===== */
+.about-block {
+  margin-bottom: 32px;
+}
+
+.about-block-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--red-main);
+  margin-bottom: 14px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.about-block-title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: linear-gradient(180deg, #FF6B9D, #FF8FB1);
+  border-radius: 2px;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-item {
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  letter-spacing: 1px;
+}
+
+.tag-like {
+  background: rgba(255, 107, 157, 0.12);
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  color: #D4587A;
+}
+
+.tag-dislike {
+  background: rgba(155, 122, 138, 0.1);
+  border: 1px solid rgba(155, 122, 138, 0.25);
+  color: var(--text-dim);
+}
+
+.fact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fact-item {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  padding-left: 16px;
+  position: relative;
+}
+
+.fact-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FF8FB1;
+}
+
+.fact-item strong {
+  color: var(--text-white);
+  font-weight: 500;
+}
+
+/* ===== 作品页 ===== */
+.works {
+  background: linear-gradient(180deg, #FFE8EE 0%, #FFF0F3 100%);
+  flex-direction: column;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.work-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(255, 107, 157, 0.1);
+}
+
+.work-card:hover {
+  transform: translateY(-6px);
+  border-color: #FF6B9D;
+  box-shadow: 0 16px 44px rgba(255, 107, 157, 0.25);
+}
+
+.work-poster {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  object-position: 50% 30%;
+  display: block;
+  background: #FFE8EE;
+}
+
+.work-poster-placeholder {
+  width: 100%;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FFD1DC 0%, #FFE8EE 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.work-poster-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(255,107,157,0.2) 0%, transparent 60%);
+}
+
+.work-poster-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--red-main);
+  text-align: center;
+  padding: 0 20px;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 2px;
+}
+
+.work-poster-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  color: var(--gold);
+  position: relative;
+  z-index: 1;
+}
+
+.work-info {
+  padding: 20px;
+}
+
+.work-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-white);
+  line-height: 1.4;
+}
+
+.work-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.work-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  background: rgba(255, 107, 157, 0.1);
+  border: 1px solid rgba(255, 107, 157, 0.25);
+  color: #FF6B9D;
+  border-radius: 12px;
+  letter-spacing: 1px;
+}
+
+.work-role {
+  font-size: 13px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.work-role span {
+  color: var(--text-dim);
+}
+
+.work-eps {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.work-link {
+  font-size: 12px;
+  color: #FF6B9D;
+  margin-top: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.work-card:hover .work-link {
+  color: #D4587A;
+  letter-spacing: 2px;
+}
+
+/* ===== 小禾包 ===== */
+.xiaohebao-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.platform-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px 20px;
+  margin: 0 auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.platform-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--red-main);
+  margin-bottom: 16px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 107, 157, 0.2);
+}
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.post-list::-webkit-scrollbar {
+  width: 4px;
+}
+.post-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 157, 0.3);
+  border-radius: 2px;
+}
+.post-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.post-link:hover {
+  background: var(--red-main);
+  color: #fff;
+  transform: translateX(4px);
+}
+.post-date {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red-main);
+  min-width: 75px;
+  flex-shrink: 0;
+}
+.post-link:hover .post-date {
+  color: #fff;
+}
+.post-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.post-arrow {
+  flex-shrink: 0;
+  font-size: 12px;
+  opacity: 0.5;
+}
+.empty-tip {
+  color: #999;
+  font-size: 13px;
+  text-align: center;
+  padding: 20px;
+}
+@media (max-width: 1024px) {
+  .post-list { max-height: none; }
+  .post-link { padding: 12px 14px; font-size: 13px; gap: 10px; }
+  .post-date { font-size: 12px; min-width: 75px; }
+}
+
+@media (max-width: 640px) {
+  .hero-birthday { font-size: 18px; letter-spacing: 4px; }
+  .hero-image { height: 40vh; }
+  .countdown { gap: 8px; flex-wrap: wrap; }
+  .countdown-item { min-width: 68px; padding: 14px 10px; }
+  .countdown-num { font-size: 32px; }
+  .hero-buttons { flex-direction: column; gap: 12px; align-items: center; }
+  .btn { width: 200px; text-align: center; }
+  .section-title { font-size: 28px; letter-spacing: 4px; }
+  .works-grid { grid-template-columns: 1fr; }
+  .roles-grid { grid-template-columns: 1fr; }
+  .form-row { flex-direction: column; }
+  .profile-card { padding: 28px 20px; }
+
+  .upcoming-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 100%;
+    padding: 0 16px;
+  }
+  .upcoming-card {
+    padding: 12px;
+  }
+  .upcoming-poster {
+    height: 160px;
+  }
+  .upcoming-title {
+    font-size: 13px;
+  }
+}
+
+/* ===== 音乐页 ===== */
+.music {
+  background: linear-gradient(180deg, #FFF0F3 0%, #FFE8EE 100%);
+  flex-direction: column;
+}
+
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.music-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  box-shadow: 0 8px 32px rgba(255, 107, 157, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+.music-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(255, 107, 157, 0.2);
+}
+
+.music-cover {
+  width: 100px;
+  height: 100px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #FF6B9D, #FFB3C6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.music-play-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.music-play-btn:hover {
+  background: rgba(255, 107, 157, 0.8);
+  transform: scale(1.1);
+}
+
+.music-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.music-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2D2D2D;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-artist {
+  font-size: 13px;
+  color: #FF6B9D;
+  margin: 0 0 4px 0;
+  font-weight: 500;
+}
+
+.music-meta {
+  font-size: 11px;
+  color: #999;
+  margin: 0 0 6px 0;
+}
+
+.music-desc {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 作品上线时间 */
+.work-date {
+  font-size: 11px;
+  color: #FF6B9D;
+/* ===== 预约作品 ===== */
+.upcoming {
+  background: linear-gradient(180deg, #FFE8EE 0%, #FFF0F3 100%);
+  flex-direction: column;
+}
+.upcoming-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+.upcoming-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+.upcoming-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(255, 107, 157, 0.15);
+}
+.upcoming-badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #FF6B9D, #FFB3C6);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.upcoming-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2D2D2D;
+  margin: 0 0 4px 0;
+}
+.upcoming-role {
+  font-size: 11px;
+  color: #FF6B9D;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+.upcoming-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.upcoming-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(255, 107, 157, 0.08);
+  color: #FF6B9D;
+}
+.upcoming-desc {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.6;
+  margin: 0;
+}
+.upcoming-poster {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: #FFE8EE;
+}
+.upcoming-link {
+  font-size: 12px;
+  color: #FF6B9D;
+  font-weight: 500;
+  margin: 8px 0 0 0;
+}
+
+  margin: 4px 0;
+  font-weight: 500;
+}
+
+/* ===== 页脚 ===== */
+.footer {
+  background: #FFE8EE;
+  border-top: 1px solid rgba(255, 107, 157, 0.15);
+  padding: 32px 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  position: relative;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  line-height: 2;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 600px;
+  display: block;
+}
+
+.footer-text .heart {
+  color: #FF6B9D;
+}
+
+/* ===== 动画 ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 1200px) {
+  .about-container { grid-template-columns: 1fr; gap: 40px; }
+  .hero { flex-direction: column; padding: 60px 24px; gap: 32px; }
+  .hero-image { width: 100%; height: 50vh; max-height: 500px; flex: none; }
+  .hero-content { max-width: 100%; padding-left: 0; text-align: center; }
+  .hero-name { font-size: 48px; letter-spacing: 6px; }
+  .hero-birthday { font-size: 22px; }
+  .countdown { justify-content: center; }
+  .hero-buttons { justify-content: center; }
+  .section { padding: 60px 24px; }
+  /* 手机端导航改成顶部横排 */
+  .side-nav {
+    top: 0;
+    right: 0;
+    left: 0;
+    transform: none;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 8px;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+  .side-nav a {
+    padding: 6px 12px;
+    font-size: 11px;
+    min-width: auto;
+    letter-spacing: 1px;
+  }
+  /* 手机端内容顶部留出导航高度 */
+  .section { padding-top: 80px; }
+  .hero { padding-top: 100px; }
+}
+
+@media (max-width: 640px) {
+  .hero-name { font-size: 36px; letter-spacing: 4px; }
+  .hero-birthday { font-size: 18px; letter-spacing: 4px; }
+  .hero-image { height: 40vh; }
+  .countdown { gap: 8px; flex-wrap: wrap; }
+  .countdown-item { min-width: 68px; padding: 14px 10px; }
+  .countdown-num { font-size: 32px; }
+  .hero-buttons { flex-direction: column; gap: 12px; align-items: center; }
+  .btn { width: 200px; text-align: center; }
+  .section-title { font-size: 28px; letter-spacing: 4px; }
+  .works-grid { grid-template-columns: 1fr; }
+  .roles-grid { grid-template-columns: 1fr; }
+  .form-row { flex-direction: column; }
+  .profile-card { padding: 28px 20px; }
+}
+
+/* ===== 米花 ===== */
+.mihua-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.mihua-gallery-item {
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.12);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.mihua-gallery-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 36px rgba(255, 107, 157, 0.25);
+}
+.mihua-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 1024px) {
+  .mihua-gallery { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .mihua-gallery { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@media (max-width: 480px) {
+  .mihua-gallery { grid-template-columns: repeat(1, 1fr); }
+}
+
+
+/* ===== 小禾包 ===== */
+
+.platform-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 28px 24px;
+}
+.platform-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--red-main);
+  margin-bottom: 20px;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(255, 107, 157, 0.2);
+}
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.month-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+.month-link:hover {
+  background: var(--red-main);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+}
+.month-link:hover .month-arrow {
+  transform: translateX(4px);
+}
+.month-arrow {
+  transition: transform 0.3s ease;
+  font-size: 12px;
+}
+.xiaohebao-tip {
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  margin-top: 10px;
+}
+@media (max-width: 1024px) {
+  
+}
+@media (max-width: 640px) {
+  .platform-section { padding: 20px 16px; }
+  .xiaohebao-container {
+    max-width: 100%;
+    padding: 0 16px;
+    gap: 16px;
+  }
+  .xiaohebao-container .post-link {
+    padding: 12px 14px;
+  }
+  .xiaohebao-container .post-title {
+    font-size: 13px;
+  }
+  .xiaohebao-container .post-date {
+    font-size: 11px;
+  }
+  .footer {
+    padding: 24px 16px;
+  }
+  .footer-text {
+    font-size: 11px;
+  }
+  .month-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .month-link { padding: 10px 8px; font-size: 12px; justify-content: center; }
+  .month-arrow { display: none; }
+}
+
+
+
+/* 搜索功能样式 */
+.search-container {
+  max-width: 500px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid #ffb6c1;
+  border-radius: 25px;
+  font-size: 14px;
+  background: #fff;
+  color: #333;
+  outline: none;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+.search-input:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+.search-input::placeholder {
+  color: #ccc;
+}
+.search-hint {
+  text-align: center;
+  font-size: 12px;
+  color: #FF8FB1;
+  margin: 8px 0 0 0;
+  letter-spacing: 1px;
+}
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ffb6c1;
+  border-radius: 15px;
+  margin-top: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 5px 20px rgba(255, 105, 180, 0.2);
+}
+.search-result-item {
+  text-decoration: none;
+  color: inherit;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ffe4e9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-result-item:hover {
+  background: #fff0f3;
+}
+.search-result-item:last-child {
+  border-bottom: none;
+}
+.search-result-title {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-result-meta {
+  font-size: 11px;
+  color: #999;
+  display: flex;
+  justify-content: space-between;
+}
+.search-result-platform {
+  color: #ff69b4;
+  font-weight: bold;
+}
+.search-no-result {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+@media (max-width: 640px) {
+  .search-container {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+}
+
+
+/* 小纸条栏目 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.emotion-tag:hover {
+  background: #FFF0F3;
+  transform: translateY(-2px);
+}
+
+
+
+
+
+
+
+.draw-button:active {
+  transform: translateY(0);
+}
+
+
+
+
+
+
+
+
+
+.note-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #FFB6C1,
+    #FFB6C1 10px,
+    #FFD1DC 10px,
+    #FFD1DC 20px
+  );
+  border-radius: 16px 16px 0 0;
+}
+
+@keyframes noteFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.note-emotion {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #FFE8EE;
+  color: #FF8FAB;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.note-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.note-date {
+  display: none;
+  font-size: 12px;
+  color: #FFB6C1;
+  text-align: right;
+}
+
+/* 手机端适配 */
+@media (max-width: 640px) {
+  
+  
+  
+  
+  
+  
+  
+  
+  .note-text {
+    font-size: 15px;
+  }
+}
+
+/* ===== 小纸条盒子样式 ===== */
+.xiaozhitiao-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.note-box {
+  background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E9 50%, #FFD1DC 100%);
+  border-radius: 30px;
+  padding: 30px 25px;
+  box-shadow: 0 20px 60px rgba(255, 20, 147, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.note-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.note-box-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.note-box-label {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.95);
+  color: #FF6B9D;
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.note-box-body {
+  position: relative;
+  z-index: 1;
+}
+
+.note-emotions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.note-emotion-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid transparent;
+  border-radius: 15px;
+  padding: 12px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #333;
+  font-weight: 500;
+}
+
+.note-emotion-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.note-emotion-btn.active {
+  background: #fff;
+  border-color: #FFB6C1;
+  color: #FF6B9D;
+  font-weight: bold;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 20, 147, 0.3);
+}
+
+.note-draw-area {
+  text-align: center;
+}
+
+.note-draw-btn {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff 0%, #FFF0F5 100%);
+  border: 4px solid #FFB6C1;
+  color: #FF6B9D;
+  font-size: 42px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(255, 20, 147, 0.4);
+}
+
+.note-draw-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 32px rgba(255, 20, 147, 0.5);
+}
+
+.note-draw-btn:active {
+  transform: scale(0.95);
+}
+
+.note-draw-hint {
+  color: #FF6B9D;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.note-box-footer {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px dashed #FFD1DC;
+}
+
+.note-box-footer span {
+  color: #FF8FAB;
+  font-size: 12px;
+}
+
+.note-result {
+  margin-top: 30px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: transparent;
+}
+
+@keyframes noteFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.note-paper {
+  background: #FFF8F0;
+  border-radius: 20px;
+  padding: 30px 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  position: relative;
+  border: 2px solid #FFE4E9;
+  overflow: hidden;
+}
+
+.note-paper::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: rgba(255, 105, 180, 0.3);
+  border-radius: 3px;
+}
+
+.note-paper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-top: 10px;
+}
+
+.note-paper-emotion {
+  background: linear-gradient(135deg, #FF69B4, #FF1493);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 15px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.note-paper-date {
+  color: #999;
+  font-size: 12px;
+}
+
+.note-paper-text {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #333;
+  text-align: center;
+  margin: 25px 0;
+  font-weight: 500;
+}
+
+.note-paper-footer {
+  text-align: center;
+  padding-top: 15px;
+  border-top: 1px dashed #FFE4E9;
+}
+
+.note-paper-footer span {
+  color: #FF69B4;
+  font-size: 12px;
+}
+
+/* 手机端适配 */
+@media (max-width: 640px) {
+  .xiaozhitiao-container {
+    padding: 10px;
+  }
+  
+  .note-box {
+    padding: 20px 15px;
+    border-radius: 25px;
+  }
+  
+  .note-emotions-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  
+  .note-emotion-btn {
+    padding: 10px 4px;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+  
+  .note-draw-btn {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+  
+  .note-paper {
+    padding: 25px 20px;
+  }
+  
+  .note-paper-text {
+    font-size: 16px;
+  }
+}
+
+/* 使用说明弹窗 */
+.usage-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: usageFadeIn 0.3s ease;
+}
+
+@keyframes usageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.usage-modal-content {
+  background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E9 100%);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+  border: 2px solid #FFD1DC;
+  animation: usageScaleIn 0.3s ease;
+}
+
+@keyframes usageScaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.usage-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #FFD1DC;
+}
+
+.usage-modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #FF6B9D;
+}
+
+.usage-modal-close {
+  font-size: 24px;
+  color: #FFB6C1;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.usage-modal-close:hover {
+  background: #FFE4E9;
+  color: #FF6B9D;
+}
+
+.usage-modal-body {
+  padding: 10px 0;
+}
+
+.usage-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #666;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.usage-modal-footer {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #FFD1DC;
+}
+
+.usage-modal-footer span {
+  font-size: 12px;
+  color: #FFB6C1;
+}
+
+@media (max-width: 640px) {
+  .usage-modal-content {
+    padding: 20px;
+    margin: 20px;
+  }
+  .usage-text {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 右侧导航 ===== -->
+<nav class="side-nav" id="sideNav">
+  <a href="#home" class="active" data-section="home">顶部</a>
+  <a href="#about" data-section="about">简介</a>
+  <a href="#social" data-section="social">🐽</a>
+  <a href="#works" data-section="works">🤓</a>
+  <a href="#upcoming" data-section="upcoming">预约</a>
+  <a href="#music" data-section="music">🎸</a>
+  <a href="#mihua" data-section="mihua">米花</a>
+  <a href="#xiaohebao" data-section="xiaohebao">小禾包</a>
+  <a href="#xiaozhitiao" data-section="xiaozhitiao">小纸条</a>
+</nav>
+
+<!-- ===== 首页 Hero ===== -->
+<section class="section hero" id="home">
+  <div class="hero-image">
+    <img src="https://aka.doubaocdn.com/s/xAT5679iRX" alt="张邵禾">
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-name">张邵禾<span class="dot">·</span>0315</h1>
+    <p class="hero-birthday">2002.03.15 &nbsp;|&nbsp; 双鱼座</p>
+    <p class="hero-tagline">NEXT CHAPTER BEGINS ON HER BIRTHDAY</p>
+    <div class="countdown-label">距离下一个生日还有</div>
+    <div class="countdown" id="countdown" style="display:flex !important; visibility:visible !important; opacity:1 !important;">
+      <div class="countdown-item">
+        <div class="countdown-num" id="days">00</div>
+        <div class="countdown-unit">天</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-num" id="hours">00</div>
+        <div class="countdown-unit">时</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-num" id="minutes">00</div>
+        <div class="countdown-unit">分</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-num" id="seconds">00</div>
+        <div class="countdown-unit">秒</div>
+      </div>
+    </div>
+    <div class="hero-buttons">
+      <a href="#about" class="btn btn-primary">查看个人简介</a>
+      <a href="#xiaohebao" class="btn btn-outline">小禾包</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 简介页 ===== -->
+<section class="section about" id="about">
+  <h2 class="section-title">关于她</h2>
+  <p class="section-subtitle">ABOUT ZHANG SHAOHE</p>
+  <div class="about-container">
+    <div class="profile-card">
+      <img class="profile-avatar" src="https://aka.doubaocdn.com/s/RkzSeB5riK" alt="张邵禾">
+      <h3 class="profile-name">张邵禾</h3>
+      <p class="profile-en">ZHANG SHAOHE</p>
+      <div class="profile-info">
+        <div class="info-row">
+          <span class="info-label">生日</span>
+          <span class="info-value">2002.03.15</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">星座</span>
+          <span class="info-value">双鱼座</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">出生地</span>
+          <span class="info-value">河南焦作</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">身高/体重</span>
+          <span class="info-value">163cm / 92斤</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">MBTI</span>
+          <span class="info-value">INFJ</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">身份</span>
+          <span class="info-value">演员</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">微博</span>
+          <span class="info-value">張張張邵禾</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">抖音</span>
+          <span class="info-value">張張張邵禾</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">小红书</span>
+          <span class="info-value">张邵禾</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">红果短剧</span>
+          <span class="info-value">张邵禾</span>
+        </div>
+      </div>
+      <div class="profile-social">
+        <button class="social-btn" onclick="openSocial('hongguo')" title="红果短剧">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="social-btn" onclick="openSocial('douyin')" title="抖音">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z"/></svg>
+        </button>
+        <button class="social-btn" onclick="openSocial('weibo')" title="微博">
+          <svg viewBox="0 0 24 24"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.573l.014.001zm.776-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.579-.18-.405-.649.381-1.017.42-1.894.003-2.519-.782-1.166-2.925-1.103-5.378-.034 0 0-.771.338-.574-.271.379-1.207.318-2.215-.265-2.79-1.325-1.314-4.826.046-7.826 3.04C2.173 10.695.5 13.138.5 15.276c0 4.069 5.215 6.571 10.358 6.571 6.679 0 11.145-3.867 11.145-6.924 0-1.85-1.556-2.896-2.744-3.346l.001-.001c-.41-.157-.816-.264-1.196-.325l.003-.001z"/></svg>
+        </button>
+        <button class="social-btn" onclick="openSocial('xhs')" title="小红书">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 8.5h-2v5h-1.5v-5h-2V9h5.5v1.5zm-7 0h-3V9h3v1.5z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="about-block">
+        <h3 class="about-block-title">关于她</h3>
+        <p class="about-bio" style="margin-bottom:0;">
+          张邵禾，中国内地新生代女演员，2002年3月15日出生于河南焦作，2025年7月接触短剧，凭借灵动自然的演技和清新独特的气质，在短剧领域崭露头角。最擅长吃饭。
+        </p>
+      </div>
+
+      <div class="about-block">
+        <h3 class="about-block-title">喜欢</h3>
+        <div class="tag-cloud">
+          <span class="tag-item tag-like">粉色</span>
+          <span class="tag-item tag-like">春天</span>
+          <span class="tag-item tag-like">奶茶</span>
+          <span class="tag-item tag-like">火锅</span>
+          <span class="tag-item tag-like">冰饮</span>
+          <span class="tag-item tag-like">日出</span>
+          <span class="tag-item tag-like">凤梨</span>
+          <span class="tag-item tag-like">榴莲</span>
+          <span class="tag-item tag-like">无糖可乐</span>
+          <span class="tag-item tag-like">辣椒</span>
+          <span class="tag-item tag-like">看剧</span>
+          <span class="tag-item tag-like">小猫米花</span>
+          <span class="tag-item tag-like">海边</span>
+          <span class="tag-item tag-like">环游世界</span>
+          <span class="tag-item tag-like">躺平</span>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3 class="about-block-title">讨厌 & 害怕</h3>
+        <div class="tag-cloud">
+          <span class="tag-item tag-dislike">西兰花</span>
+          <span class="tag-item tag-dislike">粽子</span>
+          <span class="tag-item tag-dislike">韭菜</span>
+          <span class="tag-item tag-dislike">红豆</span>
+          <span class="tag-item tag-dislike">一切虫子</span>
+          <span class="tag-item tag-dislike">恐高</span>
+          <span class="tag-item tag-dislike">深色系</span>
+          <span class="tag-item tag-dislike">深棕</span>
+          <span class="tag-item tag-dislike">枣红</span>
+          <span class="tag-item tag-dislike">弃剧</span>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3 class="about-block-title">技能 & 证书</h3>
+        <div class="fact-list">
+          <div class="fact-item"><strong>教师资格证</strong> — 有证</div>
+          <div class="fact-item"><strong>驾驶证</strong> — 会开车</div>
+          <div class="fact-item"><strong>爵士舞</strong> — 为了运动学的</div>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3 class="about-block-title">小趣事</h3>
+        <div class="fact-list">
+          <div class="fact-item"><strong>唱跳ACE</strong>，唱跳全能</div>
+          <div class="fact-item">起床铃声是<strong>懒羊羊的青草蛋糕</strong></div>
+          <div class="fact-item">自己选了<strong>小猪塑</strong></div>
+          <div class="fact-item">养的小猫叫<strong>米花</strong>，6月19日生日</div>
+          <div class="fact-item">不太会选择困难，但有时候很纠结</div>
+          <div class="fact-item">近期最喜欢的歌词：<strong>"像你一样的存在不存在"</strong></div>
+          <div class="fact-item">喜欢日出，因为<strong>不早起很罕见</strong></div>
+          <div class="fact-item">一个人的时候有时候会无聊，大部分不会</div>
+          <div class="fact-item">想拥有一个亿（<strong>完全做梦版</strong>）</div>
+          <div class="fact-item">什么剧都看，但经常看着看着就弃剧了</div>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3 class="about-block-title">演艺经历</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">2002</div>
+            <div class="timeline-desc">3月15日出生于河南焦作，双鱼座。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2025.07</div>
+            <div class="timeline-desc">正式接触短剧，开启演员之路。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-desc">迎来作品爆发期，《京夜复沦陷》《闪婚后，神秘老公的身份藏不住了》《云先生他陷进去了》等多部作品接连上线，饰演的南枳、沈雯、吴优、宋眠眠等角色深入人心。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 社交平台 ===== -->
+<section class="section social-section" id="social">
+  <h2 class="section-title">关注她</h2>
+  <p class="section-subtitle">SOCIAL PLATFORMS</p>
+  <div class="social-grid">
+    <a class="social-card" href="https://weibo.com/u/5565914640" target="_blank">
+      <div class="social-cover-wrap">
+        <img class="social-cover" src="https://aka.doubaocdn.com/s/ROBJrq1D7A" alt="微博">
+        <div class="social-platform-badge">
+          <svg viewBox="0 0 24 24"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.573l.014.001zm.776-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.579-.18-.405-.649.381-1.017.42-1.894.003-2.519-.782-1.166-2.925-1.103-5.378-.034 0 0-.771.338-.574-.271.379-1.207.318-2.215-.265-2.79-1.325-1.314-4.826.046-7.826 3.04C2.173 10.695.5 13.138.5 15.276c0 4.069 5.215 6.571 10.358 6.571 6.679 0 11.145-3.867 11.145-6.924 0-1.85-1.556-2.896-2.744-3.346l.001-.001c-.41-.157-.816-.264-1.196-.325l.003-.001z"/></svg>
+          <span>微博</span>
+        </div>
+      </div>
+      <div class="social-body">
+        <p class="social-account">@張張張邵禾</p>
+        <p class="social-preview">🧩</p>
+        <div class="social-stats">
+          <span class="social-stat"><strong>12.6w</strong> 粉丝</span>
+          <span class="social-stat"><strong>328</strong> 关注</span>
+          <span class="social-stat"><strong>156</strong> 微博</span>
+        </div>
+        <div class="social-preview-works">
+          <p class="social-preview-title">最新动态</p>
+          <a class="social-preview-item" href="https://weibo.com/5565914640/5331239286080617" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/ROBJrq1D7A" alt="微博">
+            <div class="social-preview-info">
+              <p class="social-preview-name">🧩</p>
+              <p class="social-preview-meta">2小时前 · 1234赞 · 89评论</p>
+            </div>
+          </a>
+          <a class="social-preview-item" href="https://weibo.com/5565914640/5331149732709820" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/RkzSeB5riK" alt="微博">
+            <div class="social-preview-info">
+              <p class="social-preview-name">全能小禾🤓</p>
+              <p class="social-preview-meta">8-12 · 27转发 · 31评论</p>
+            </div>
+          </a>
+        </div>
+        <div class="social-action">前往微博 &rarr;</div>
+      </div>
+    </a>
+
+    <a class="social-card" href="https://v.douyin.com/pBxcIZp6rQo/" target="_blank">
+      <div class="social-cover-wrap">
+        <img class="social-cover social-cover-zoom" src="https://aka.doubaocdn.com/s/iVKizoAZiN" alt="抖音" style="object-position: center 40%;">
+        <div class="social-platform-badge">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z"/></svg>
+          <span>抖音</span>
+        </div>
+      </div>
+      <div class="social-body">
+        <p class="social-account">@張張張邵禾</p>
+        <p class="social-preview">比心~比心~比？........苏小姐，我心呢？</p>
+        <div class="social-stats">
+          <span class="social-stat"><strong>8.6w</strong> 粉丝</span>
+          <span class="social-stat"><strong>256w</strong> 获赞</span>
+          <span class="social-stat"><strong>89</strong> 作品</span>
+        </div>
+        <div class="social-preview-works">
+          <p class="social-preview-title">最新视频</p>
+          <a class="social-preview-item" href="https://v.douyin.com/Fh8syLuPEjs/" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/iVKizoAZiN" alt="抖音">
+            <div class="social-preview-info">
+              <p class="social-preview-name">比心~比心~比？........苏小姐，我心呢？</p>
+              <p class="social-preview-meta">5.6w播放 · 3456赞</p>
+            </div>
+          </a>
+          <a class="social-preview-item" href="https://v.douyin.com/waBHQ907XLg/" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/ROBJrq1D7A" alt="抖音">
+            <div class="social-preview-info">
+              <p class="social-preview-name">阮诺诺 希望你能一直开心幸福～ #宫先生今天追到老婆了吗</p>
+              <p class="social-preview-meta">12.3w播放 · 8901赞</p>
+            </div>
+          </a>
+        </div>
+        <div class="social-action">前往抖音 &rarr;</div>
+      </div>
+    </a>
+
+    <a class="social-card" href="https://xhslink.cn/m/5i9RDahDZI5" target="_blank">
+      <div class="social-cover-wrap">
+        <img class="social-cover social-cover-zoom" src="https://aka.doubaocdn.com/s/UKlmkIpO5L" alt="小红书" style="object-position: center 45%;">
+        <div class="social-platform-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 8.5h-2v5h-1.5v-5h-2V9h5.5v1.5zm-7 0h-3V9h3v1.5z"/></svg>
+          <span>小红书</span>
+        </div>
+      </div>
+      <div class="social-body">
+        <p class="social-account">@張張張邵禾</p>
+        <p class="social-preview">那我悄悄发组图</p>
+        <div class="social-stats">
+          <span class="social-stat"><strong>3.2w</strong> 粉丝</span>
+          <span class="social-stat"><strong>93</strong> 获赞收藏</span>
+          <span class="social-stat"><strong>45</strong> 笔记</span>
+        </div>
+        <div class="social-preview-works">
+          <p class="social-preview-title">最新笔记</p>
+          <a class="social-preview-item" href="https://xhslink.cn/o/8Qf369Rie5d" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/hMQKt0xmAl" alt="小红书">
+            <div class="social-preview-info">
+              <p class="social-preview-name">那我悄悄发组图</p>
+              <p class="social-preview-meta">1234赞 · 567收藏</p>
+            </div>
+          </a>
+        </div>
+        <div class="social-action">前往小红书 &rarr;</div>
+      </div>
+    </a>
+
+    <a class="social-card" href="https://novelquickapp.com/s/vh8J8kot54Y/" target="_blank">
+      <div class="social-cover-wrap">
+        <img class="social-cover social-cover-zoom" src="https://aka.doubaocdn.com/s/FqIBCGcdVz" alt="红果短剧" style="object-position: center 40%;">
+        <div class="social-platform-badge">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <span>红果短剧</span>
+        </div>
+      </div>
+      <div class="social-body">
+        <p class="social-account">演员张邵禾 · 个人主页</p>
+        <p class="social-preview">结婚证是假的，苏小姐可以恋爱了</p>
+        <div class="social-stats">
+          <span class="social-stat"><strong>17</strong> 部作品</span>
+          <span class="social-stat"><strong>千万</strong> 播放</span>
+          <span class="social-stat"><strong>免费</strong> 观看</span>
+        </div>
+        <div class="social-preview-works">
+          <p class="social-preview-title">最新作品</p>
+          <a class="social-preview-item" href="https://novelquickapp.com/s/ot8QnwLR52U/" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/7kvWONqHGZ" alt="红果">
+            <div class="social-preview-info">
+              <p class="social-preview-name">结婚证是假的，苏小姐可以恋爱了</p>
+              <p class="social-preview-meta">饰演苏也 · 免费看全集</p>
+            </div>
+          </a>
+          <a class="social-preview-item" href="https://novelquickapp.com/s/9qCh9bCEGdI/" target="_blank">
+            <img class="social-preview-thumb" src="https://aka.doubaocdn.com/s/JZU1q9OGvB" alt="红果">
+            <div class="social-preview-info">
+              <p class="social-preview-name">宫先生今天追到老婆了吗</p>
+              <p class="social-preview-meta">饰演阮诺诺 · 免费看全集</p>
+            </div>
+          </a>
+        </div>
+        <div class="social-action">前往红果 &rarr;</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ===== 作品页 ===== -->
+<section class="section works" id="works">
+  <h2 class="section-title">🤓</h2>
+  <p class="section-subtitle">FILMOGRAPHY</p>
+  <div class="works-grid" id="worksGrid">
+    <!-- 作品卡片由 JS 渲染 -->
+  </div>
+</section>
+<!-- ===== 预约作品 ===== -->
+<section class="section upcoming" id="upcoming">
+  
+  <div class="upcoming-grid" id="upcomingGrid">
+  </div>
+</section>
+
+
+<!-- ===== 音乐页 ===== -->
+<section class="section music" id="music">
+  <h2 class="section-title">🎸</h2>
+  <p class="section-subtitle">MUSIC</p>
+  <div class="music-grid" id="musicGrid">
+    <!-- 音乐卡片由 JS 渲染 -->
+  </div>
+</section>
+
+<!-- ===== 米花 ===== -->
+<section class="section mihua" id="mihua">
+  <h2 class="section-title">米花</h2>
+  <p class="section-subtitle">MI HUA · 6.19</p>
+  <div class="mihua-gallery">
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/aK88idpOVG" alt="米花 1" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/wczTVHnFIL" alt="米花 2" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/Jmr3gjZonc" alt="米花 3" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/f7URsUZVJU" alt="米花 4" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/32SoEJMmcf" alt="米花 5" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/RT8WuPYnMf" alt="米花 6" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/qn9Y8XYlBF" alt="米花 7" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/hLVNXplWMI" alt="米花 8" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/WLPmPOBjbG" alt="米花 9" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/ge0oAtgOkA" alt="米花 10" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/9KbCr7QsrJ" alt="米花 11" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/BRVqGQigHa" alt="米花 12" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/FMDlWG0sB9" alt="米花 13" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/Us9aw9iD4m" alt="米花 14" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/2iBoUunrvb" alt="米花 15" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/K74Wh43zES" alt="米花 16" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/fFIDrbnLUr" alt="米花 17" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/nHRrOkoEaV" alt="米花 18" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/HDIyAD35VC" alt="米花 19" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/UxPPBXHV9k" alt="米花 20" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/x3jKPaCvUH" alt="米花 21" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/rIVY4NP61f" alt="米花 22" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/pXzSQoR52a" alt="米花 23" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/BZ5IQnwG54" alt="米花 24" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/6ha83yimFL" alt="米花 25" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/mpwQ2jQiw1" alt="米花 26" loading="lazy">
+      </div>
+    <div class="mihua-gallery-item">
+        <img src="https://aka.doubaocdn.com/s/3VAWcdhG7U" alt="米花 27" loading="lazy">
+      </div>
+
+  </div>
+</section>
+
+<!-- ===== 小禾包 ===== -->
+<section class="section xiaohebao" id="xiaohebao" style="padding-bottom: 100px; scroll-margin-top: 80px;">
+  
+  
+
+  <div class="xiaohebao-container">
+      <div class="search-container" style="margin-bottom:16px;">
+    <input type="text" id="postSearch" class="search-input" placeholder="🔍 搜索作品文案或日期..." oninput="searchPosts()">
+    <p class="search-hint">抖音 · 小红书 · 微博 都可以搜索</p>
+    <div id="searchResults" class="search-results" style="display:none;"></div>
+  </div>
+  <div class="platform-section douyin">
+        <h3 class="platform-title">🎵 抖音</h3>
+        <div class="post-list">
+        <a class="post-link" href="https://v.douyin.com/-ZirXXgHROw/" target="_blank">
+          <span class="post-date">2026.09.01</span>
+          <span class="post-title">可真正带入角色的时候，我也会心疼每一个自己。</span>
+          <span class="post-arrow">→</span>
+        </a>
+
+        <a class="post-link" href="https://v.douyin.com/UnpLbmX908o" target="_blank">
+          <span class="post-date">2026.08.25</span>
+          <span class="post-title">阮诺诺 希望你能一直开心幸福～ # 宫先生今天追到...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Zr9ooudfuyw" target="_blank">
+          <span class="post-date">2026.08.25</span>
+          <span class="post-title">“比心~比心~比？........苏小姐，我心呢？...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/tbKnZsWA7MA" target="_blank">
+          <span class="post-date">2026.08.24</span>
+          <span class="post-title">恋爱有很多种，和你走遍每一个角落算一种 # 宫先生...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/ZeN8j5dEZSU" target="_blank">
+          <span class="post-date">2026.08.21</span>
+          <span class="post-title">好像那是一个秋天 夕阳 西下# 海岛日落限定</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/LhbuFngo6aA" target="_blank">
+          <span class="post-date">2026.08.15</span>
+          <span class="post-title"># 辣妹微甜</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/TbbQtB01QYM" target="_blank">
+          <span class="post-date">2026.08.14</span>
+          <span class="post-title">生命随年月流去</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/10Dkb8YEMmE" target="_blank">
+          <span class="post-date">2026.08.08</span>
+          <span class="post-title">忘动作大王 # 社会情歌 # 千禧辣妹</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/-fNj6Bfa4rg" target="_blank">
+          <span class="post-date">2026.08.05</span>
+          <span class="post-title">打工碎片🧩 # 善待脆皮年轻人 # 上班路透 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/HXzAiJPs9oU" target="_blank">
+          <span class="post-date">2026.08.01</span>
+          <span class="post-title">两个木头人 # 我和我的笨蛋姐妹 # 张邵禾 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/vNbR7bwo67Q" target="_blank">
+          <span class="post-date">2026.07.31</span>
+          <span class="post-title"># 抽象 # 低脂# 和朋友一起奇奇怪怪 # 我和...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Q13lJDHGkKI" target="_blank">
+          <span class="post-date">2026.07.23</span>
+          <span class="post-title">楚绵绵你是一个小哭包 # 大叔闪婚了解一下 # 张...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/MKyMN2U2Zx4" target="_blank">
+          <span class="post-date">2026.07.20</span>
+          <span class="post-title">大叔，你说婚约是什么？ 婚约是借一纸名义明目张胆爱...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/hcH1Jc5zRbU" target="_blank">
+          <span class="post-date">2026.07.19</span>
+          <span class="post-title">大叔，我是你老婆呀～ 本是一夜偶然相逢，一纸婚约后...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/HiSIZJmT-Z4" target="_blank">
+          <span class="post-date">2026.07.18</span>
+          <span class="post-title">两个(河南)人 一起散着步 # 乔佳乐 # 张邵禾...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/cD-rpT5B--o" target="_blank">
+          <span class="post-date">2026.07.06</span>
+          <span class="post-title">外婆旅游闪婚，我却捡回暗恋多年的男神？原来爱情不分...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/vkNf74TGXow" target="_blank">
+          <span class="post-date">2026.07.06</span>
+          <span class="post-title">《三代新娘一罐糖》和周老师的二搭的剧上线啦～ 三代...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/33l4_Ah8oq8" target="_blank">
+          <span class="post-date">2026.06.28</span>
+          <span class="post-title">她一定比我成熟～ # 姐姐 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NjCXisPkuwU" target="_blank">
+          <span class="post-date">2026.06.24</span>
+          <span class="post-title">闺蜜我俩在一起就这样 # 来杯好茶摇一摇 # 姐妹...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/vp5qgC66cVk" target="_blank">
+          <span class="post-date">2026.06.20</span>
+          <span class="post-title">却扛不住对你的喜欢 # 抗住了柴米油盐的麻烦 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/sHBVTxQRGmM" target="_blank">
+          <span class="post-date">2026.06.19</span>
+          <span class="post-title">手势舞大王来也 # 甜妹必跳</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Bg4wkGQbA0A" target="_blank">
+          <span class="post-date">2026.06.16</span>
+          <span class="post-title">有什么不懂的可以问徐秘书 徐秘书也不懂 # 美女总...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/KReUe-Dn8S4" target="_blank">
+          <span class="post-date">2026.06.14</span>
+          <span class="post-title">霸道总裁爱上骑三轮车并且碰瓷的我 # 奔跑吧三轮车...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/xVmqp12XAN4" target="_blank">
+          <span class="post-date">2026.06.06</span>
+          <span class="post-title">愿大家提笔从容自信，合笔如愿以偿 # 张北淅 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/ifsSdE-SJrM" target="_blank">
+          <span class="post-date">2026.06.04</span>
+          <span class="post-title">以为是一场意外，结果是他爱了岁岁年年。原来不是命运...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/EI9qJzmTCtg" target="_blank">
+          <span class="post-date">2026.06.02</span>
+          <span class="post-title">早上坏 # 电子甜妹 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NcPhgOufD1o" target="_blank">
+          <span class="post-date">2026.06.02</span>
+          <span class="post-title">命中注定，是你都是你，甜甜的恋爱，6月4日正式开启...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/owYkMado4Zg" target="_blank">
+          <span class="post-date">2026.06.01</span>
+          <span class="post-title">一场相互奔赴，来自年少的存粹心动。 # 蓄谋已久闪...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/60Kn1VOJ69A" target="_blank">
+          <span class="post-date">2026.05.29</span>
+          <span class="post-title">喵喵喵～ # 今天老公和我结婚了吗 # 甜剧cp ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/3Ki58-NshKE" target="_blank">
+          <span class="post-date">2026.05.28</span>
+          <span class="post-title">你的陪聊兼老婆来了，江宴你准备好了吗？ # 今天老...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/G55sEfh8zeQ" target="_blank">
+          <span class="post-date">2026.05.27</span>
+          <span class="post-title">爱看小甜剧的有福咯 这部超甜 # 今天老公和我结婚...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/fzpQuvHcDJ4" target="_blank">
+          <span class="post-date">2026.05.26</span>
+          <span class="post-title">《闪婚后神秘老公的身份藏不住了》芃麦 甜而不蠢 柔而不弱 独立不矫情 芃麦 永远幸福吧# 闪婚后神秘老公的身份藏不住了 # 花花家新剧从针锋相对...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/hDU0zg70ZGU" target="_blank">
+          <span class="post-date">2026.05.25</span>
+          <span class="post-title">十里桃花～ # 湖边20分钟效应 # 山水与甜妹 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/vL3KLZXh1MI" target="_blank">
+          <span class="post-date">2026.05.22</span>
+          <span class="post-title">“你在我就安心一点 你不在我就勇敢一点”# 闪婚后...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/0aVof9PH9oM" target="_blank">
+          <span class="post-date">2026.05.21</span>
+          <span class="post-title">就这样爱你爱你爱你随时都要一起 # 我带崽闪婚后怎...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/-aOwT1Bill0" target="_blank">
+          <span class="post-date">2026.05.21</span>
+          <span class="post-title">直到有另一个人的出现 # 马烁棋 # 张邵禾 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/cXXGIx9aSKU" target="_blank">
+          <span class="post-date">2026.05.18</span>
+          <span class="post-title">《我带崽闪婚后怎么老妈也》可以预约啦，宋眠眠✖️顾...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/11tn_EUVYtc" target="_blank">
+          <span class="post-date">2026.05.13</span>
+          <span class="post-title">以契约之名，读你藏于灵魂的深情。 # 契约读心甜妻...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NN-g_OdU9uQ" target="_blank">
+          <span class="post-date">2026.05.11</span>
+          <span class="post-title">扫地机器人来了 # 这才是甜妹该跳的舞 # 法修散...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/ypt1gR9JqZk" target="_blank">
+          <span class="post-date">2026.05.10</span>
+          <span class="post-title">你在我眼中真的很特别 # 闪婚后神秘老公的身份藏不...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/kI7T4ECQlWM" target="_blank">
+          <span class="post-date">2026.05.07</span>
+          <span class="post-title">我假装大方 其实恶狠狠的关掉了对话框～</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/OwHUF5G2C8o" target="_blank">
+          <span class="post-date">2026.04.30</span>
+          <span class="post-title">明天就要交稿了怎么办呀 # 萌系职场 # 甜妹工作...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/xYPSL0zFh4c" target="_blank">
+          <span class="post-date">2026.04.29</span>
+          <span class="post-title">诡秘们你们说我选对了吗 # 女仆装 # 今日甜妹 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/3DWt7EOsaXo" target="_blank">
+          <span class="post-date">2026.04.28</span>
+          <span class="post-title">报告 最近在每个组都过的很开心 # 幕后花絮 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/xVoTu7V7yJE" target="_blank">
+          <span class="post-date">2026.04.27</span>
+          <span class="post-title">明明不是下雨天～ # 午夜忧郁纯情女总裁 # 扮演...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/eQ3ecpIHZh8" target="_blank">
+          <span class="post-date">2026.04.26</span>
+          <span class="post-title">今天是番茄炒禾 # 跳个甜妹舞 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/3WkHr8fX6ZA" target="_blank">
+          <span class="post-date">2026.04.25</span>
+          <span class="post-title">一切的爱 恨 都在自寻烦恼</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/z4ktjO1HdtA" target="_blank">
+          <span class="post-date">2026.04.23</span>
+          <span class="post-title">卖萌time～ # 拳击舞 # 吃我一记喵喵拳 #...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Ql1f_2tqW0g" target="_blank">
+          <span class="post-date">2026.04.22</span>
+          <span class="post-title">生活给我出难题 我说ok小问题 # 短剧演员 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/AZT8ugn3VSM" target="_blank">
+          <span class="post-date">2026.04.18</span>
+          <span class="post-title">闺蜜我们就这样交流病情 # 误闯天家 # 短剧演员...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/wT6h6r3d1eE" target="_blank">
+          <span class="post-date">2026.04.14</span>
+          <span class="post-title">《我在现代有个恐龙乐园》柳雪 听说这个动物园里有恐龙，我柳雪来看看怎么个事儿～# 我在现代有个恐龙乐园 # 短剧推荐 # 新剧来袭 # 张邵禾 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/f5JKEijTavU" target="_blank">
+          <span class="post-date">2026.04.13</span>
+          <span class="post-title">四喜小师妹明天上线！ # 穿越民国成僵尸我带我儿七...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/5jyHsrO_9Cw" target="_blank">
+          <span class="post-date">2026.04.11</span>
+          <span class="post-title">拨开天空的乌云～ # 甜妹不谢 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/CPqt3Ne_gjk" target="_blank">
+          <span class="post-date">2026.04.10</span>
+          <span class="post-title">《京夜复沦陷》南枳 生动版 希望每个女孩都能找到属于自己的沈胤# 京夜复沦陷 # 前男友变顶头上司他明撩暗诱# 花花家新剧五年带球跑追妻太上头 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/qXFmyRMHuIs" target="_blank">
+          <span class="post-date">2026.04.08</span>
+          <span class="post-title">南枳花絮一则 # 京夜复沦陷 # 张邵禾 # 短剧...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/B1xGzEb5OLo" target="_blank">
+          <span class="post-date">2026.04.07</span>
+          <span class="post-title">心跳不止，无可替代 「久别重逢的我们，在持续爆炸的...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/t8zaRMaRZ88" target="_blank">
+          <span class="post-date">2026.04.06</span>
+          <span class="post-title">超甜追妻剧来的。# 京夜复沦陷 # 前男友变顶头上...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/BWjTe528fhQ" target="_blank">
+          <span class="post-date">2026.04.04</span>
+          <span class="post-title">导演说很清水# 花絮 # 甜剧来袭 # 张邵禾 #...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/cAEJlhtmqKI" target="_blank">
+          <span class="post-date">2026.04.01</span>
+          <span class="post-title">不知道 我的道具很美味 # 张邵禾 # 拍摄花絮 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/0ZPs4KMfiTQ" target="_blank">
+          <span class="post-date">2026.03.27</span>
+          <span class="post-title">杀青日嘿嘿嘿# 猛女必备手势舞</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/hQlVXSP03ko" target="_blank">
+          <span class="post-date">2026.03.25</span>
+          <span class="post-title">如果我的坚强任性会不小心伤害了你 # 监视器视角 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NT-Vwiwd5AQ" target="_blank">
+          <span class="post-date">2026.03.24</span>
+          <span class="post-title">这把追夫日记 # 张邵禾 # 短剧女主 # 拍摄花...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/8UCQYMFshW4" target="_blank">
+          <span class="post-date">2026.03.22</span>
+          <span class="post-title">小张你收收牙呗 # 拍摄花絮 # 张邵禾 # 短剧...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/9ocgd6Vq7kM" target="_blank">
+          <span class="post-date">2026.03.22</span>
+          <span class="post-title">群像万岁！！！ # 系统在手逆天主母带飞全家 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/bEParZS09Kw" target="_blank">
+          <span class="post-date">2026.03.19</span>
+          <span class="post-title">这把又是强制爱 # 短剧 # 拍摄花絮 # 张邵禾...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/26ZOsXbr1iA" target="_blank">
+          <span class="post-date">2026.03.15</span>
+          <span class="post-title">岁 愿 清醒 独立 前路坦荡 万事顺意 成为更厉害更快乐的自己。</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/GdNjbD1aUdU" target="_blank">
+          <span class="post-date">2026.03.09</span>
+          <span class="post-title">诡秘们你说我每天就这样痴痴傻傻的也会被ai替代吗#...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/zDD8lGmJNL4" target="_blank">
+          <span class="post-date">2026.03.07</span>
+          <span class="post-title">我们是专业演员， 一般不会笑场！除非忍不住……# ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/aB-3HRb0pZc" target="_blank">
+          <span class="post-date">2026.03.04</span>
+          <span class="post-title">就这样不停的进组拍拍拍 # dailylife # plog # 拍摄花絮 # 短剧演员 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/znAHVIxgtDM" target="_blank">
+          <span class="post-date">2026.03.03</span>
+          <span class="post-title">帅是一种感觉。# 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/9z-N1AlER-g" target="_blank">
+          <span class="post-date">2026.03.02</span>
+          <span class="post-title"># 张邵禾 # 地球人你好我在为你跳舞 #</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/s8bl-MNukGo" target="_blank">
+          <span class="post-date">2026.03.01</span>
+          <span class="post-title">就这样萌萌的一直走下去 # 叮崽摇 # 张邵禾 #...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/WWqbRs62cBU" target="_blank">
+          <span class="post-date">2026.02.26</span>
+          <span class="post-title">白溪若 以后不再做小苦包了好不好# 短剧推荐 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/yKTOERk3pm4" target="_blank">
+          <span class="post-date">2026.02.15</span>
+          <span class="post-title">我要爱你一辈子了 # tpl # 情人节快乐</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/DqTnFLZBCpU" target="_blank">
+          <span class="post-date">2026.02.09</span>
+          <span class="post-title">小扇 流萤 满园的笑语 # 花絮 # 短剧女主 #...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/zupQIGLMghE" target="_blank">
+          <span class="post-date">2026.02.07</span>
+          <span class="post-title">依旧美丽冻人 # 营业 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/9S8-bPU70so" target="_blank">
+          <span class="post-date">2026.02.03</span>
+          <span class="post-title">小张你到底摸够了没有 # 拍摄花絮 # 短剧 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/p3WEeG3Gx6Q" target="_blank">
+          <span class="post-date">2026.01.30</span>
+          <span class="post-title"># 萌妹子</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/ttzGqg6EAZE" target="_blank">
+          <span class="post-date">2026.01.30</span>
+          <span class="post-title"># 短剧演员 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/72zMQZS1QcQ" target="_blank">
+          <span class="post-date">2026.01.22</span>
+          <span class="post-title">宋听欢 剧照大放送嘿嘿# 短剧推荐 # 沈总请签收你的小太阳 # 短剧</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/wNacELr1I-c" target="_blank">
+          <span class="post-date">2026.01.21</span>
+          <span class="post-title">嘎嘣一下就亖了 # 短剧演员 # 短剧</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/l5k5xfPojKA" target="_blank">
+          <span class="post-date">2026.01.12</span>
+          <span class="post-title"># QQ爱</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/StFY_4nGzQI" target="_blank">
+          <span class="post-date">2026.01.11</span>
+          <span class="post-title">第一课 不要相信任何人 # 短剧 # 抽象...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/1cvubLzN61k" target="_blank">
+          <span class="post-date">2026.01.10</span>
+          <span class="post-title">谁和我一起上街卖白菜 # 古装短剧 # 短剧演员 ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/l6NHabDZXMs" target="_blank">
+          <span class="post-date">2026.01.02</span>
+          <span class="post-title">好运会降临在你爱上自己的每一刻</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/froT3cl0bqY" target="_blank">
+          <span class="post-date">2025.12.31</span>
+          <span class="post-title">今年7月份开始接触短剧至今的所有角色 辛苦了老己 我答应你明年一定带你争取更多好的角色 感谢一路走来的所有老师 我们2026见# 短剧 # 张邵禾</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/6xhDznjQEAc" target="_blank">
+          <span class="post-date">2025.12.30</span>
+          <span class="post-title">哥哥是他们先动手的～ # 短剧 # 张邵禾 # 短...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/ocnK9fGjJZM" target="_blank">
+          <span class="post-date">2025.12.26</span>
+          <span class="post-title"># 卖萌</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/FGx9Sh1nAZg" target="_blank">
+          <span class="post-date">2025.12.25</span>
+          <span class="post-title">拍！拍的就是女频！ # 短剧 # 张邵禾 # 拍摄...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/LlhAf_zJQqQ" target="_blank">
+          <span class="post-date">2025.12.20</span>
+          <span class="post-title">最近是南风天潮潮的爱恋～ # 喵</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/JHjnj8XS8KM" target="_blank">
+          <span class="post-date">2025.12.16</span>
+          <span class="post-title">我不愿看到你流泪的眼睛 # 短剧 # 短剧女主 #...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/w5aMq6pOLeo" target="_blank">
+          <span class="post-date">2025.12.15</span>
+          <span class="post-title">回去告诉你妈妈 有个齐刘海的小妹妹想给你一个家^⦁...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/7DlIWCClQEU" target="_blank">
+          <span class="post-date">2025.12.14</span>
+          <span class="post-title">心 在离别前荡起秋千 # 短剧演员 # 张邵禾 # 校园短剧 # 学姐</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Ybr6ErARs7E" target="_blank">
+          <span class="post-date">2025.12.12</span>
+          <span class="post-title">一则苏月月库存花絮 # 短剧 # 短剧女主 # 张...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NBGkXOP4xZg" target="_blank">
+          <span class="post-date">2025.12.04</span>
+          <span class="post-title">没更新的日子都在剧组搞抽象 # 花絮 # 短剧女主...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/bIfmMK796CU" target="_blank">
+          <span class="post-date">2025.12.01</span>
+          <span class="post-title">没事不要联系我 大哥大这没信号 # 女人三十 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/PVHY7wWRNSg" target="_blank">
+          <span class="post-date">2025.11.30</span>
+          <span class="post-title">买辆奥迪送你，太贵； 请你出国旅游，浪费； 约你海...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/hiuhEpFf30Y" target="_blank">
+          <span class="post-date">2025.11.27</span>
+          <span class="post-title">嗯。 # 短剧演员 # 张邵禾 # 短剧推荐 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/2JHPR8uMr1Q" target="_blank">
+          <span class="post-date">2025.11.22</span>
+          <span class="post-title">谁艾特我拍的来着 # 先天小狗圣体 # 卖萌 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/nY-BVtif7Xo" target="_blank">
+          <span class="post-date">2025.11.21</span>
+          <span class="post-title">爱着你的长发 短发 卷发 直发 黑发 乱发 秀发</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/R1JahC3BwVs" target="_blank">
+          <span class="post-date">2025.11.18</span>
+          <span class="post-title">就这个苏以念爽！！！ # 重生后太太成了傅总的贴身...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/zoA4eXaEn2A" target="_blank">
+          <span class="post-date">2025.11.16</span>
+          <span class="post-title">谁说男频没落了 我基础我的女主们可不基础# 拍摄花...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/9IC_W5GVAfQ" target="_blank">
+          <span class="post-date">2025.11.14</span>
+          <span class="post-title">谁还没看 # 重生后太太成了傅总的贴身小挂件 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Ccu2I6T8ut0" target="_blank">
+          <span class="post-date">2025.11.13</span>
+          <span class="post-title">苏以念（鲜活版 # 重生后太太成了傅总的贴身小挂件 # 张邵禾 # 拍摄花絮 # 短剧</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/UgwKr_JWVtM" target="_blank">
+          <span class="post-date">2025.11.13</span>
+          <span class="post-title">定妆碰见喜欢的裙子就酱</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/-1OtCnaerHM" target="_blank">
+          <span class="post-date">2025.11.12</span>
+          <span class="post-title">太好了是掌公主苏以念 我们有救了 # 短剧 # 短...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/3UFJFSd_8zg" target="_blank">
+          <span class="post-date">2025.11.06</span>
+          <span class="post-title">🔪🐴🔪🐴 # 毛茸茸 # 卖萌</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NzeI7wEBPwA" target="_blank">
+          <span class="post-date">2025.11.02</span>
+          <span class="post-title">就这样喵喵又咪咪 # 短剧 # 古装短剧</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/i5MfZNU6aWA" target="_blank">
+          <span class="post-date">2025.10.28</span>
+          <span class="post-title">谁家的古风小女子 # 汉服 # 短剧</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/v1WOL6uePJ0" target="_blank">
+          <span class="post-date">2025.10.23</span>
+          <span class="post-title">拜拜 生气就说拜拜૮₍ꐦ -᷅ ⤙ -᷄ ₎ა #...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/yiVADYK4Ty4" target="_blank">
+          <span class="post-date">2025.10.15</span>
+          <span class="post-title">拍戏的时候顺手拍了个mv.# 校园 # 高考 # ...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/U-KJH-sXeV4" target="_blank">
+          <span class="post-date">2025.10.11</span>
+          <span class="post-title">你看她的眼神实在算不上清白# 拍摄花絮 # 爱了爱...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/WekZj_szVD0" target="_blank">
+          <span class="post-date">2025.09.24</span>
+          <span class="post-title"># 喵</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/75K17F3KNjQ" target="_blank">
+          <span class="post-date">2025.09.21</span>
+          <span class="post-title">偷偷拍下你的样子，各种角度我都喜欢。</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Yad70ZXK-gQ" target="_blank">
+          <span class="post-date">2025.08.26</span>
+          <span class="post-title">𝐩𝐥𝐨𝐠𝐠𝐠𝐠 🫧 🐈</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/mVv13ljklbM" target="_blank">
+          <span class="post-date">2025.08.02</span>
+          <span class="post-title">听取姐声一片</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/DRr7hOe_XIo" target="_blank">
+          <span class="post-date">2025.07.28</span>
+          <span class="post-title">同步等你</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/3wO0t5-VWzk" target="_blank">
+          <span class="post-date">2025.06.28</span>
+          <span class="post-title">今天是姐姐</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Ugy69mmP9UY" target="_blank">
+          <span class="post-date">2025.06.25</span>
+          <span class="post-title">对我来讲 仅仅活着还不够 还需要阳光自由和一点自信</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/fk31_4bw98Y" target="_blank">
+          <span class="post-date">2025.06.24</span>
+          <span class="post-title">明明是我更可爱吧 你不许跟他聊天了(ᐢ⸝⸝˙Ⱉ˙⸝...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/xqqJfyb4Q88" target="_blank">
+          <span class="post-date">2025.04.12</span>
+          <span class="post-title">生活是动词，是一万个幸福碎片。</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/oPxcJck6MKk" target="_blank">
+          <span class="post-date">2025.04.05</span>
+          <span class="post-title">我想要的陪伴原来一直是你的负担</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/DbZYrBbcRQw" target="_blank">
+          <span class="post-date">2025.03.28</span>
+          <span class="post-title">要是你睁开眼睛看看我 我不信你两眼空空</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/rDXzSUewqvE" target="_blank">
+          <span class="post-date">2025.03.27</span>
+          <span class="post-title">有人说我是小蛋糕 我尝了一口还真是 ✌︎︎˃̵͈̑...</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/wC6AJz2ApWw" target="_blank">
+          <span class="post-date">2025.03.24</span>
+          <span class="post-title">我的生命是一万次的春和景明</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/5Rtf_Z2waeQ" target="_blank">
+          <span class="post-date">2025.03.23</span>
+          <span class="post-title">虽然我看起来很漂亮 但事实就是如此</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/XSg8FmWOS2s" target="_blank">
+          <span class="post-date">2025.03.12</span>
+          <span class="post-title">你的紧张在意 让我觉得安心</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/XTq755DSl5U" target="_blank">
+          <span class="post-date">2025.02.24</span>
+          <span class="post-title">你不喜欢我 然后呢 我该难过吗</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/RjHhe4VrN30" target="_blank">
+          <span class="post-date">2025.02.17</span>
+          <span class="post-title">宝宝 你看着我的眼睛 真的没感觉吗</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/RYdS4Seuz_I" target="_blank">
+          <span class="post-date">2025.02.08</span>
+          <span class="post-title">顺遂无虞 皆得所愿。# 静安寺</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/iNJD-uPYwdc/" target="_blank">
+          <span class="post-date">2025.01.26</span>
+          <span class="post-title">祝你拥有神奇的一天🎀</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/9W7fgsdHP-s/" target="_blank">
+          <span class="post-date">2025.01.24</span>
+          <span class="post-title">也许是我错了 但那又怎样呢</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/-lFOtYXeBbQ/" target="_blank">
+          <span class="post-date">2025.01.22</span>
+          <span class="post-title">懂知足 于是好幸福</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/aG2WQZEco7I/" target="_blank">
+          <span class="post-date">2025.01.18</span>
+          <span class="post-title">我这个人开始对你产生意义了吗</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/QfneBmOn2ks/" target="_blank">
+          <span class="post-date">2025.01.17</span>
+          <span class="post-title">原来你只从我身边借过</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/2-RbJ988Q1Q/" target="_blank">
+          <span class="post-date">2024.12.22</span>
+          <span class="post-title">你留下来的想念还在房间</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/x1Bf3goelSg/" target="_blank">
+          <span class="post-date">2024.12.19</span>
+          <span class="post-title">每一帧 都珍贵</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/FgXBHbxUX9M/" target="_blank">
+          <span class="post-date">2024.12.15</span>
+          <span class="post-title">那些说讨厌我的人 现实见了我只会想亲我</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/vrfkQzRlxXw/" target="_blank">
+          <span class="post-date">2024.12.03</span>
+          <span class="post-title">你的背影好小 我舍不得你一个人走</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/AqlU2yX6WoM/" target="_blank">
+          <span class="post-date">2024.11.30</span>
+          <span class="post-title">晒到的阳光分你一半՞˶･֊･˶՞ಣ</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/OL1QuDwK-Ek/" target="_blank">
+          <span class="post-date">2024.11.29</span>
+          <span class="post-title">看到你漂亮的眼睛能一直笑 也算我幸福的一种</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/CXmeEDSxV8M/" target="_blank">
+          <span class="post-date">2024.11.02</span>
+          <span class="post-title">如果多一张车票 你会不会带我走</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/LXJ-RoQMSnQ/" target="_blank">
+          <span class="post-date">2024.10.21</span>
+          <span class="post-title">你的心 到底被什么蛊惑</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/30TZLvJQu40/" target="_blank">
+          <span class="post-date">2024.09.30</span>
+          <span class="post-title">我做事情可是要人家哄着的～</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Y0QN570JR_g/" target="_blank">
+          <span class="post-date">2024.08.18</span>
+          <span class="post-title">靠近我 就是晴天。</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/ymPTE2xA8MA/" target="_blank">
+          <span class="post-date">2024.08.16</span>
+          <span class="post-title">我要和你 看最美的风景。</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/7PtK6cBKfl0/" target="_blank">
+          <span class="post-date">2024.07.12</span>
+          <span class="post-title">"谢谢你 我阴暗世界的小太阳"</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/NfcLEaBFzKc/" target="_blank">
+          <span class="post-date">2024.06.09</span>
+          <span class="post-title">感觉才是王道</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/j30Fh5S5p-o/" target="_blank">
+          <span class="post-date">2024.03.26</span>
+          <span class="post-title">梨花哪有28岁香</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/l5JTsd63wRY/" target="_blank">
+          <span class="post-date">2024.01.27</span>
+          <span class="post-title">想通电话 问你最近还好吗</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/qSnjV4OwhFs/" target="_blank">
+          <span class="post-date">2023.11.20</span>
+          <span class="post-title">谁化完妆还不是个甜妹</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/waBHQ907XLg/" target="_blank">
+          <span class="post-date">2023.07.17</span>
+          <span class="post-title">阮诺诺 希望你能一直开心幸福～</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/Fh8syLuPEjs/" target="_blank">
+          <span class="post-date">2023.06.10</span>
+          <span class="post-title">比心~比心~比？........苏小姐，我心呢？</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/d-WpihnVcJU" target="_blank">
+          <span class="post-date">2023.04.01</span>
+          <span class="post-title">什么时候一起看花海# 花都开好了就见一面吧</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/KbAsQeE7U9g/" target="_blank">
+          <span class="post-date">2022.11.08</span>
+          <span class="post-title">当公主咯</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://v.douyin.com/PmNyPSGUwrw/" target="_blank">
+          <span class="post-date">2021.08.26</span>
+          <span class="post-title">状态是一个人最好的风水</span>
+          <span class="post-arrow">→</span>
+        </a>
+      </div>
+      </div>
+      <div class="platform-section xiaohongshu">
+        <h3 class="platform-title">📕 小红书</h3>
+        <div class="post-list">
+        <a class="post-link" href="https://xhslink.cn/o/8Qf369Rie5d" target="_blank">
+          <span class="post-date">2026.08.09</span>
+          <span class="post-title">那我悄悄发组图</span>
+          <span class="post-arrow">→</span>
+        </a>
+        </div>
+      </div>
+      <div class="platform-section weibo">
+        <h3 class="platform-title">📱 微博</h3>
+        <div class="post-list">
+        <a class="post-link" href="https://weibo.com/5565914640/5338393990924408" target="_blank">
+          <span class="post-date">2026.09.01</span>
+          <span class="post-title">早春晴朗 你太美味了</span>
+          <span class="post-arrow">→</span>
+        </a>
+
+        <a class="post-link" href="https://weibo.com/5565914640/5331239286080617" target="_blank">
+          <span class="post-date">2026.08.12</span>
+          <span class="post-title">图片分享</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5331149732709820" target="_blank">
+          <span class="post-date">2026.08.12</span>
+          <span class="post-title">图片分享</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5330940356198763" target="_blank">
+          <span class="post-date">2026.08.12</span>
+          <span class="post-title">夯！沈腾nb！</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5330192264593529" target="_blank">
+          <span class="post-date">2026.08.10</span>
+          <span class="post-title">我去当美妆博主谁支持</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5330024749072728" target="_blank">
+          <span class="post-date">2026.08.09</span>
+          <span class="post-title">🐈‍⬛</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5329112378114434" target="_blank">
+          <span class="post-date">2026.08.07</span>
+          <span class="post-title">闲的时候就想碎碎念一下</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5329110138093925" target="_blank">
+          <span class="post-date">2026.08.07</span>
+          <span class="post-title">立秋快乐闺蜜们</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5328648896512534" target="_blank">
+          <span class="post-date">2026.08.05</span>
+          <span class="post-title">夯！</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327922647013600" target="_blank">
+          <span class="post-date">2026.08.03</span>
+          <span class="post-title">拍1-1等机位等灯在现场睡着之人</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327630681508344" target="_blank">
+          <span class="post-date">2026.08.03</span>
+          <span class="post-title">闺蜜们我打算建一个群</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327627388977640" target="_blank">
+          <span class="post-date">2026.08.03</span>
+          <span class="post-title">阮诺诺2.0</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327626277490358" target="_blank">
+          <span class="post-date">2026.08.03</span>
+          <span class="post-title">《宫先生今天追到老婆了吗》阮诺诺</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327624855358502" target="_blank">
+          <span class="post-date">2026.08.03</span>
+          <span class="post-title">阮诺诺定妆look🕶️</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327616383919367" target="_blank">
+          <span class="post-date">2026.08.02</span>
+          <span class="post-title">什么。。我居然一个月没更新了吗。？？</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5327570137519371" target="_blank">
+          <span class="post-date">2026.08.02</span>
+          <span class="post-title">这把终于让我瘦了</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314943673173698" target="_blank">
+          <span class="post-date">2026.06.29</span>
+          <span class="post-title">这个臭屁小女孩一秒钟摆800个动作</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314235031879851" target="_blank">
+          <span class="post-date">2026.06.27</span>
+          <span class="post-title">红🍎已经可以预约啦《大叔，闪婚了解一下》</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314232708761435" target="_blank">
+          <span class="post-date">2026.06.27</span>
+          <span class="post-title">没了没了 这次真没了</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314231580229783" target="_blank">
+          <span class="post-date">2026.06.27</span>
+          <span class="post-title">几点零了</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314230380923453" target="_blank">
+          <span class="post-date">2026.06.27</span>
+          <span class="post-title">楚绵绵3.0 猜猜我会发到几.0</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314229428293441" target="_blank">
+          <span class="post-date">2026.06.27</span>
+          <span class="post-title">楚绵绵2.0</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5314228572914987" target="_blank">
+          <span class="post-date">2026.06.27</span>
+          <span class="post-title">《大叔，闪婚了解一下》楚绵绵1.0</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5312844151390748" target="_blank">
+          <span class="post-date">2026.06.23</span>
+          <span class="post-title">也是伴随着鸟叫声收工了</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5310938582093473" target="_blank">
+          <span class="post-date">2026.06.17</span>
+          <span class="post-title">百变小禾定妆日</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5310543519024330" target="_blank">
+          <span class="post-date">2026.06.16</span>
+          <span class="post-title">我们大女人就是如此有力量</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5309516623383166" target="_blank">
+          <span class="post-date">2026.06.14</span>
+          <span class="post-title">成都特产毒蚊子吗</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5306653574693338" target="_blank">
+          <span class="post-date">2026.06.06</span>
+          <span class="post-title">上班哭下班我也哭哭哭</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5305156028597493" target="_blank">
+          <span class="post-date">2026.06.02</span>
+          <span class="post-title">在背明天的词 看本子给我看哭了</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5304828333129875" target="_blank">
+          <span class="post-date">2026.06.01</span>
+          <span class="post-title">定妆定了14个小时 我已力竭</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5304465838048832" target="_blank">
+          <span class="post-date">2026.05.31</span>
+          <span class="post-title">深夜有感而发 何德何能被你们如此偏爱</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5304103623721080" target="_blank">
+          <span class="post-date">2026.05.30</span>
+          <span class="post-title">依赖姐姐一辈子也不是什么坏事</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5303379770738195" target="_blank">
+          <span class="post-date">2026.05.28</span>
+          <span class="post-title">跳完舞就这样购入三袋食物…</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5302908392311688" target="_blank">
+          <span class="post-date">2026.05.26</span>
+          <span class="post-title">《今天老公和我结婚了吗》阮星眠 5.28上线</span>
+          <span class="post-arrow">→</span>
+        </a>
+        <a class="post-link" href="https://weibo.com/5565914640/5302635926390289" target="_blank">
+          <span class="post-date">2026.05.26</span>
+          <span class="post-title">没有滤镜的好天气～</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5300493384679688" target="_blank">
+          <span class="post-date">2026.05.20</span>
+          <span class="post-title">哎呦完全萌物呀</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5300341064598051" target="_blank">
+          <span class="post-date">2026.05.19</span>
+          <span class="post-title">在家说减肥说了20天 最终以一个最肥的姿态迎来进组</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5299026913919624" target="_blank">
+          <span class="post-date">2026.05.16</span>
+          <span class="post-title">依旧最喜欢的分开发🤓</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5299026603540499" target="_blank">
+          <span class="post-date">2026.05.16</span>
+          <span class="post-title">今天整了个斜刘海🤓</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5298684599992786" target="_blank">
+          <span class="post-date">2026.05.15</span>
+          <span class="post-title">稀里哗啦呀哭的我</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5298243941960974" target="_blank">
+          <span class="post-date">2026.05.13</span>
+          <span class="post-title">爆汗！最近很爱吃冰冰凉的小番茄</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5298199346807211" target="_blank">
+          <span class="post-date">2026.05.13</span>
+          <span class="post-title">上学迟到 上班迟到 现在上舞蹈课也迟到</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5298144264849355" target="_blank">
+          <span class="post-date">2026.05.13</span>
+          <span class="post-title">美瞳分享：年抛半年抛 14.5黑色自然色</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5297912292837046" target="_blank">
+          <span class="post-date">2026.05.12</span>
+          <span class="post-title">Day1 舞蹈练习</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5297909189839802" target="_blank">
+          <span class="post-date">2026.05.12</span>
+          <span class="post-title">冒个泡🫧</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5296912963470014" target="_blank">
+          <span class="post-date">2026.05.10</span>
+          <span class="post-title">熬穿了。。睡觉</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5296499522273351" target="_blank">
+          <span class="post-date">2026.05.09</span>
+          <span class="post-title">存子太美了</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5296093977903718" target="_blank">
+          <span class="post-date">2026.05.07</span>
+          <span class="post-title">一大块黄油面包</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5295726225523793" target="_blank">
+          <span class="post-date">2026.05.06</span>
+          <span class="post-title">如何呢 还有一组live</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5295725797972756" target="_blank">
+          <span class="post-date">2026.05.06</span>
+          <span class="post-title">喝茶day～</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5294470922504581" target="_blank">
+          <span class="post-date">2026.05.03</span>
+          <span class="post-title">耶耶耶 大事很妙！</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5294470381175400" target="_blank">
+          <span class="post-date">2026.05.03</span>
+          <span class="post-title">快递不断拿拿拿拿到厌倦</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5294038487925018" target="_blank">
+          <span class="post-date">2026.05.02</span>
+          <span class="post-title">夯爆了</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5293926887981685" target="_blank">
+          <span class="post-date">2026.05.01</span>
+          <span class="post-title">我的粉丝群已创建！</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5293925465588102" target="_blank">
+          <span class="post-date">2026.05.01</span>
+          <span class="post-title">你们的每一封信我都有好好看</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5293881577181517" target="_blank">
+          <span class="post-date">2026.05.01</span>
+          <span class="post-title">闺蜜们猜猜我最后选了哪件呢</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5293730979382859" target="_blank">
+          <span class="post-date">2026.05.01</span>
+          <span class="post-title">五月顺利</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5293161783236067" target="_blank">
+          <span class="post-date">2026.04.29</span>
+          <span class="post-title">每天就这样呆萌的看这个世界 直到有人跟我说这种症状叫脑残</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5292461087001930" target="_blank">
+          <span class="post-date">2026.04.27</span>
+          <span class="post-title">死蚊子咬我腿就算了咬我屁股蛋啥意思啊</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5292278010612920" target="_blank">
+          <span class="post-date">2026.04.27</span>
+          <span class="post-title">喜欢哪个我</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291738289672437" target="_blank">
+          <span class="post-date">2026.04.25</span>
+          <span class="post-title">我就这样 每顿饭恨不得养活十个骑手</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291679664050315" target="_blank">
+          <span class="post-date">2026.04.25</span>
+          <span class="post-title">小小战绩！拿下！</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291585562479520" target="_blank">
+          <span class="post-date">2026.04.25</span>
+          <span class="post-title">明天武汉进组定妆喔～</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291584879071703" target="_blank">
+          <span class="post-date">2026.04.25</span>
+          <span class="post-title">跟你们讲个搞笑的 昨天在登机口等的时候睡着了</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291583331107621" target="_blank">
+          <span class="post-date">2026.04.25</span>
+          <span class="post-title">昨天飞机上睡了俩小时 到家吃顿饭从两点睡到十点</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291387428013131" target="_blank">
+          <span class="post-date">2026.04.24</span>
+          <span class="post-title">想用那个面部清晰来着的 但是没找到是哪个p图软件里的</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291384965957767" target="_blank">
+          <span class="post-date">2026.04.24</span>
+          <span class="post-title">小芃麦清理库存中。。。</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291384603150266" target="_blank">
+          <span class="post-date">2026.04.24</span>
+          <span class="post-title">那我发点小芃麦吧</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291361544701319" target="_blank">
+          <span class="post-date">2026.04.24</span>
+          <span class="post-title">这个小迪迦做的好棒！</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5291248681484755" target="_blank">
+          <span class="post-date">2026.04.24</span>
+          <span class="post-title">山珍海味都端上 不如一碗麻辣烫</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5290447800894437" target="_blank">
+          <span class="post-date">2026.04.22</span>
+          <span class="post-title">芃麦定妆look～</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5290370948923617" target="_blank">
+          <span class="post-date">2026.04.22</span>
+          <span class="post-title">我就这样。</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5290366355898831" target="_blank">
+          <span class="post-date">2026.04.22</span>
+          <span class="post-title">人怎么可以如此有韧性 在一次次好累中变成了一次次我可以。</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5290006975610979" target="_blank">
+          <span class="post-date">2026.04.21</span>
+          <span class="post-title">人怎么能越熬越精神呢</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5289255889011443" target="_blank">
+          <span class="post-date">2026.04.19</span>
+          <span class="post-title">今天深夜收工看见你们还在楼下等我是我第一次觉得特别内疚...</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5289253043175936" target="_blank">
+          <span class="post-date">2026.04.19</span>
+          <span class="post-title">真正感到被爱时 满脑子只剩下感谢 谢谢你们来爱我。</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5288087217509194" target="_blank">
+          <span class="post-date">2026.04.15</span>
+          <span class="post-title">鲜芋仙的芋圆 我将爱你一辈子</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5288048900184724" target="_blank">
+          <span class="post-date">2026.04.15</span>
+          <span class="post-title">爱上黑发的第n天 给上次直播间中奖的小宝们发货咯 久等啦～</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287426587362094" target="_blank">
+          <span class="post-date">2026.04.14</span>
+          <span class="post-title">感恩</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287258527370303" target="_blank">
+          <span class="post-date">2026.04.13</span>
+          <span class="post-title">16号成都进组 我将从明天开始减肥嘿嘿</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287257427674439" target="_blank">
+          <span class="post-date">2026.04.13</span>
+          <span class="post-title">我的火锅搭子们 这个香油特别好吃 在店里吃的火锅走的时候问老板要的哈哈哈</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287255121593052" target="_blank">
+          <span class="post-date">2026.04.13</span>
+          <span class="post-title">你们测这个了嘛哈哈哈</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287253225767559" target="_blank">
+          <span class="post-date">2026.04.13</span>
+          <span class="post-title">饿醒了闺蜜们 睁开眼就点上了</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287060743127175" target="_blank">
+          <span class="post-date">2026.04.12</span>
+          <span class="post-title">爱你老己</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5287046180504684" target="_blank">
+          <span class="post-date">2026.04.12</span>
+          <span class="post-title">今日露营记.</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5286629832923480" target="_blank">
+          <span class="post-date">2026.04.11</span>
+          <span class="post-title">图片分享</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5286219680582902" target="_blank">
+          <span class="post-date">2026.04.10</span>
+          <span class="post-title">不上班的日子都是好日子。</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5285947362251740" target="_blank">
+          <span class="post-date">2026.04.09</span>
+          <span class="post-title">泪水打湿减脂餐 发誓瘦到83</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5285572995712013" target="_blank">
+          <span class="post-date">2026.04.08</span>
+          <span class="post-title">懒得发了 发点近期美照</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5285572015031046" target="_blank">
+          <span class="post-date">2026.04.08</span>
+          <span class="post-title">《金牌外卖员拒绝通下水道》饰：林可柠</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5285571393492067" target="_blank">
+          <span class="post-date">2026.04.08</span>
+          <span class="post-title">《高考后无线重制》饰：姜柠柠</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5285570211480022" target="_blank">
+          <span class="post-date">2026.04.08</span>
+          <span class="post-title">《重生后太太成了傅总的贴身小挂件》饰：苏以念</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5285567400511275" target="_blank">
+          <span class="post-date">2026.04.08</span>
+          <span class="post-title">我将开始更新微博！</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/5222219177263844" target="_blank">
+          <span class="post-date">2025.10.16</span>
+          <span class="post-title">八月份片场日记</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/4818858680254504" target="_blank">
+          <span class="post-date">2022.09.28</span>
+          <span class="post-title">你问我今年冬天会冷吗</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/4795698731810957" target="_blank">
+          <span class="post-date">2022.07.26</span>
+          <span class="post-title">治愈人间的小天使们</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/4793302417671835" target="_blank">
+          <span class="post-date">2022.07.20</span>
+          <span class="post-title">分享视频</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/4787284438682041" target="_blank">
+          <span class="post-date">2022.07.03</span>
+          <span class="post-title">分享视频</span>
+          <span class="post-arrow">→</span>
+        </a>
+<a class="post-link" href="https://weibo.com/5565914640/4780075339481734" target="_blank">
+          <span class="post-date">2022.06.14</span>
+          <span class="post-title">笑起来脸真大</span>
+          <span class="post-arrow">→</span>
+        </a>
+        </div>
+      </div>
+  </div>
+</section>
+<section class="section xiaozhitiao" id="xiaozhitiao" style="padding-bottom: 100px; scroll-margin-top: 80px;">
+  <div class="xiaozhitiao-container">
+    <div class="note-box">
+      <div class="note-box-header">
+        <span class="note-box-label" id="usageLabel" style="cursor:pointer;" onclick="showUsageModal()">使用说明</span>
+      </div>
+      <div class="note-box-body">
+        <div class="note-emotions-grid">
+          <button class="note-emotion-btn active" data-emotion="cat">🐱 小猫耳朵</button>
+          <button class="note-emotion-btn" data-emotion="pinky">🤙 拉勾</button>
+          <button class="note-emotion-btn" data-emotion="seven">🤟 比7</button>
+          <button class="note-emotion-btn" data-emotion="cupid">⭐️</button>
+          <button class="note-emotion-btn" data-emotion="cheek">🥰 脸颊比心</button>
+          <button class="note-emotion-btn" data-emotion="princess">🐱 米花</button>
+          <button class="note-emotion-btn" data-emotion="pinch">🤏 捏脸</button>
+          <button class="note-emotion-btn" data-emotion="wink">😉 wink</button>
+        </div>
+        <div class="note-draw-area">
+          <button class="note-draw-btn" onclick="drawNote()">抽</button>
+          <p class="note-draw-hint">选择emoji 点击获取ssr</p>
+        </div>
+      </div>
+      <div class="note-box-footer">
+        <span>百变小禾ssr</span>
+      </div>
+    </div>
+    <div id="noteResult" class="note-result" style="display:none;">
+      <div class="note-paper">
+        <div class="note-paper-header">
+          <span id="noteEmotion" class="note-paper-emotion"></span>
+          <!-- <span id="noteDate" class="note-paper-date"></span> -->
+        </div>
+        <p id="noteText" class="note-paper-text"></p>
+        <div class="note-paper-footer">
+          <span>— 张邵禾专属ssr —</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 使用说明弹窗 -->
+<div id="usageModal" class="usage-modal" style="display:none;" onclick="hideUsageModal()">
+  <div class="usage-modal-content" onclick="event.stopPropagation()">
+    <div class="usage-modal-header">
+      <span class="usage-modal-title">✨ 使用说明</span>
+      <span class="usage-modal-close" onclick="hideUsageModal()">×</span>
+    </div>
+    <div class="usage-modal-body">
+      <p class="usage-text">吃饱睡好了就是美好的一天</p>
+      <p class="usage-text">没吃饱饭没休息好将不会给全世界好脸色</p>
+    </div>
+    <div class="usage-modal-footer">
+      <span>点击任意处关闭</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== 页脚 ===== -->
+<footer class="footer">
+  <p class="footer-text">
+    张邵禾专属网站 &nbsp;·&nbsp; happy7一口怪兽<br>
+    本站所有内容仅供粉丝交流使用 &nbsp;·&nbsp; Made with <span class="heart">♥</span> by fans
+  </p>
+</footer>
+
+<script>
+
+
+// ===== 作品数据 =====
+const worksData = [{
+    title: '大叔，闪婚了解一下2',
+    role: '楚绵绵',
+    eps: '全剧集',
+    tags: ['续作', '闪婚', '甜宠'],
+    desc: '楚绵绵与易铖奕的故事继续上演，婚后生活甜蜜又充满挑战。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/1UFRsn26Sq',
+    date: '2025-12-01'
+  },
+{
+    title: '宫先生今天追到老婆了吗',
+    role: '阮诺诺',
+    eps: '全剧集',
+    tags: ['追妻', '甜宠', '都市'],
+    desc: '宫宸懿一路追妻，阮诺诺能否被他的真心打动？',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/AeUiLnTIg9',
+    date: '2025-07-17'
+  },
+{
+    title: '大叔，闪婚了解一下',
+    role: '楚绵绵',
+    eps: '全剧集',
+    tags: ['闪婚', '逆袭', '虐恋'],
+    desc: '考上大学却被逼辍学，被闺蜜陷害毁容，绝境中找到亲生父母，收获幸福。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/LBg6E5VZS2',
+    date: '2025-11-01'
+  },
+{
+    title: '闪婚后，神秘老公的身份藏不住了',
+    role: '芃麦',
+    eps: '109集',
+    tags: ['闪婚', '甜宠', '身份反转'],
+    desc: '一场意外的闪婚，神秘老公的真实身份逐渐浮出水面。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/9Qc55kXyps',
+    date: '2026-03-01'
+  },
+{
+    title: '结婚证是假的，苏小姐可以恋爱了',
+    role: '苏也',
+    eps: '全剧集',
+    tags: ['假结婚', '甜宠', '都市言情'],
+    desc: '最好的爱情，是我看向你时，你也刚好在看我。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/STPxNe3DWN',
+    date: '2026-06-01'
+  },
+{
+    title: '京夜复沦陷',
+    role: '南枳',
+    eps: '82集',
+    tags: ['都市爱情', '破镜重圆', '故人重逢'],
+    desc: '醉酒阴差阳错睡了刚空降的顶头上司，才发现是五年前分手的前男友沈胤。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/t6M73gPkuT',
+    date: '2026-05-01'
+  },
+{
+    title: '我无敌了你瞒着我干什么',
+    role: '蒋雯',
+    eps: '全剧集',
+    tags: ['都市', '无敌', '搞笑'],
+    desc: '我都无敌了，你还瞒着我干什么？',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/qAQumA0o4j',
+    date: '2026-04-15'
+  },
+{
+    title: '云先生他陷进去了',
+    role: '吴优',
+    eps: '全剧集',
+    tags: ['先婚后爱', '三胞胎', '都市言情'],
+    desc: '阴差阳错怀了三胞胎，和狂傲男云楚领证结婚，互看生厌的夫妻渐渐动心。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/iOOGvCV3Eq',
+    date: '2026-02-01'
+  },
+{
+    title: '金牌外卖员，拒绝疏通下水道',
+    role: '林可柠',
+    eps: '全剧集',
+    tags: ['都市', '逆袭', '搞笑'],
+    desc: '金牌外卖员拒绝疏通下水道，靠实力逆袭人生。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/nVGZKSDUV2',
+    date: '2026-07-01'
+  },
+{
+    title: '我在现代有个恐龙乐园',
+    role: '柳雪',
+    eps: '全剧集',
+    tags: ['奇幻', '恐龙', '都市'],
+    desc: '意外获得恐龙乐园系统，在现代开启奇幻创业之旅。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/KQIzxfUPwn',
+    date: '2025-09-15'
+  },
+{
+    title: '这个反派太狂傲',
+    role: '赢木暖',
+    eps: '全剧集',
+    tags: ['穿越', '反派', '爽文'],
+    desc: '穿越成反派，却因为太狂傲而改变了剧情走向。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/bmYDJgQoTF',
+    date: '2026-05-20'
+  },
+{
+    title: '重生后太太成了傅总的贴身小挂件',
+    role: '苏以念',
+    eps: '全剧集',
+    tags: ['重生', '甜宠', '总裁'],
+    desc: '重生归来，成为傅总身边甩不掉的贴身小挂件。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/di5wEb9UP6',
+    date: '2025-10-01'
+  },
+{
+    title: '学霸穿书学渣，我靠满分颠覆人生',
+    role: '白溪若',
+    eps: '全剧集',
+    tags: ['穿书', '校园', '逆袭'],
+    desc: '学霸穿书成学渣，靠满分成绩颠覆人生。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/G9MuINZaFB',
+    date: '2026-05-10'
+  },
+{
+    title: '系统在手，逆天主母带飞全家',
+    role: '凤姐儿',
+    eps: '全剧集',
+    tags: ['穿越', '系统', '宅斗'],
+    desc: '带着系统穿越成主母，逆天改命带飞全家。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/RHGeeMKuP8',
+    date: '2026-04-25'
+  },
+{
+    title: '今天老公和我结婚了吗',
+    role: '阮星眠',
+    eps: '全剧集',
+    tags: ['甜宠', '婚姻', '都市'],
+    desc: '每一天都在问：今天老公和我结婚了吗？',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/fKBJvkVJq0',
+    date: '2025-08-01'
+  },
+{
+    title: '三代新娘一罐糖',
+    role: '苏晚晴',
+    eps: '全剧集',
+    tags: ['家庭', '甜宠', '三代同堂'],
+    desc: '三代人的新娘故事，一罐糖串联起家族的甜蜜传承。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/Iaw5a4I9pj',
+    date: '2026-04-01'
+  },
+{
+    title: '穿越民国成僵尸，我带我儿七叔飞',
+    role: '四喜',
+    eps: '全剧集',
+    tags: ['穿越', '民国', '奇幻'],
+    desc: '穿越民国变成僵尸，带着儿子和七叔一路开挂飞黄腾达。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/dX0kyxVCwJ',
+    date: '2025-10-15'
+  },
+{
+    title: '青梅吻唇角',
+    role: '方呤秋',
+    eps: '全剧集',
+    tags: ['青春', '甜宠', '青梅竹马'],
+    desc: '青梅竹马的甜蜜爱情，吻落在唇角的那一刻。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/eExwMCRMMo',
+    date: '2026-06-15'
+  },
+{
+    title: '蓄谋已久：闪婚老公暗恋我',
+    role: '宋绵绵',
+    eps: '77集',
+    tags: ['闪婚', '暗恋', '甜宠'],
+    desc: '一场蓄谋已久的闪婚，原来老公早已暗恋自己多年。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/1JrhP5lMyO',
+    date: '2026-01-01'
+  },
+{
+    title: '沈总，请签收你的小太阳',
+    role: '宋听欢',
+    eps: '全剧集',
+    tags: ['甜宠', '治愈', '都市'],
+    desc: '她是他生命里的小太阳，温暖了他冰冷的世界。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/fPzHuxlF5l',
+    date: '2025-09-01'
+  },
+{
+    title: '资助系统：开局校花为我庆生',
+    role: '苏月月',
+    eps: '80集',
+    tags: ['校园', '系统', '甜宠'],
+    desc: '绑定资助系统，开局校花为我庆生，人生从此开挂。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/sQyccORFGs',
+    date: '2025-07-20'
+  },
+{
+    title: '契约读心甜妻：沉睡老公气醒了',
+    role: '夏枝枝',
+    eps: '全剧集',
+    tags: ['契约', '读心', '甜宠'],
+    desc: '以契约之名，读你藏于灵魂的深情。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/wUQzN6LyqU',
+    link: 'https://novelquickapp.com/s/a1hF-Pk-Bpg/',
+    date: '2026-05-13'
+  },
+{
+    title: '学渣的无限高考日',
+    role: '姜柠柠',
+    eps: '全剧集',
+    tags: ['校园', '穿越', '青春'],
+    desc: '陷入无限循环的高考日，学渣能否逆袭翻盘？',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/XDcABFAVdL',
+    date: '2025-08-15'
+  },
+{
+    title: '吻落初雪时',
+    role: '桑酒',
+    eps: '全剧集',
+    tags: ['都市爱情', '虐恋', '初雪'],
+    desc: '初雪落下的那一刻，吻落在了谁的唇上。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/EynMh7kisE',
+    date: '2025-12-15'
+  },
+{
+    title: '玉芙蓉',
+    role: '林若瑶',
+    eps: '全剧集',
+    tags: ['古装', '宅斗', '逆袭'],
+    desc: '玉芙蓉般的女子，在深宅大院中杀出一条血路。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/1sVGe9zgOj',
+    date: '2026-06-01'
+  },
+{
+    title: '医途有风',
+    role: '孙雪',
+    eps: '全剧集',
+    tags: ['医疗', '都市', '励志'],
+    desc: '在医疗道路上逆风前行的故事。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/OxgVbN1DOv',
+    date: '2026-08-01'
+  },
+{
+    title: '我觉醒心动系统',
+    role: '白瑶',
+    eps: '全剧集',
+    tags: ['系统', '甜宠', '都市'],
+    desc: '觉醒心动系统，收获甜蜜爱情。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/QKXW7izraC',
+    date: '2026-07-25'
+  },
+{
+    title: '医生给自己做手术，这很合理吧',
+    role: '刘倩倩',
+    eps: '全剧集',
+    tags: ['医疗', '爽文', '逆袭'],
+    desc: '医生竟然给自己做手术，惊呆众人。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/5yRnw8Qior',
+    date: '2026-07-20'
+  },
+{
+    title: '老爸重返18岁，送给女儿的救赎',
+    role: '薛欣',
+    eps: '全剧集',
+    tags: ['穿越', '家庭', '搞笑'],
+    desc: '老爸重返18岁，和女儿做同学。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/fAda23gapl',
+    date: '2026-07-15'
+  },
+{
+    title: '系统通两界，一袋零食攻略美女公主',
+    role: '玲珑郡主',
+    eps: '全剧集',
+    tags: ['穿越', '系统', '甜宠'],
+    desc: '一袋零食打通两界，攻略美女公主。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/Hafk3sl7GH',
+    date: '2026-07-10'
+  },
+{
+    title: '太公赐我系统，前妻小脸被打肿',
+    role: '小鱼',
+    eps: '全剧集',
+    tags: ['系统', '逆袭', '爽文'],
+    desc: '太公赐我系统，前妻后悔莫及。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/I3od4lRZZ3',
+    date: '2026-07-05'
+  },
+{
+    title: '小青梅又奶又凶，轮椅少爷超宠她',
+    role: '凌娅',
+    eps: '全剧集',
+    tags: ['青梅竹马', '甜宠', '都市'],
+    desc: '又奶又凶的小青梅，被轮椅少爷超宠。',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/8zoSZorPaR',
+    date: '2026-06-28'
+  },
+{
+    title: '美女总裁被我骂惨了',
+    role: '徐秘书',
+    eps: '全剧集',
+    tags: ['都市', '搞笑', '甜宠'],
+    desc: '美女总裁竟然被我骂惨了，结果...',
+    hasPoster: true,
+    poster: 'https://aka.doubaocdn.com/s/iLhsOep3BZ',
+    date: '2026-06-20'
+  }
+];
+
+// ===== 音乐数据 =====
+const musicData = [
+  { title: '遇见你的时候所有星星都落到我头上', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04i07X' },
+  { title: '几分之几', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04nnzu' },
+  { title: '爱情转移', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04jcpF' },
+  { title: '宝贝', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04zZ6f' },
+  { title: '勇气', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04Oblg' },
+  { title: '浴室', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04AaqB' },
+  { title: '我爱你', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04nNOA' },
+  { title: '麦恩莉', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04SqBu' },
+  { title: '我们两', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04OyNU' },
+  { title: '特别的人', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04ugFr' },
+  { title: '富士山下', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04MK0n' },
+  { title: '快乐的扑满', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be042ZzK' },
+  { title: '唯一', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04LbFm' },
+  { title: '房间', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04Hdnh' },
+  { title: '房间chorus', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04HhXF' },
+  { title: '猜不透', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04XeT3' },
+  { title: '小情歌', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be041s8M' },
+  { title: '小幸运', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05bYrq' },
+  { title: '情歌', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be049Pcy' },
+  { title: '我们的明天', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04ZyRS' },
+  { title: '收藏', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04RtQB' },
+  { title: '我', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04TGOI' },
+  { title: '人间', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04V3YX' },
+  { title: 'April Encounter', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05kTd2' },
+  { title: '喜欢', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05i0Ek' },
+  { title: '喜欢你', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be04X7lD' },
+  { title: '好久不见', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05neC7' },
+  { title: 'My love', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be046Dfa' },
+  { title: '等你的季节', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05vlVv' },
+  { title: '阳光下的星星', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05pvrh' },
+  { title: '听海', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05aXGS' },
+  { title: '落空', artist: '张邵禾', type: '翻唱', desc: '网易云音乐翻唱作品', duration: '--:--', url: 'https://163cn.tv/be05doSs' }
+];
+// ===== 渲染音乐卡片 =====
+function renderMusic() {
+  const grid = document.getElementById('musicGrid');
+  grid.innerHTML = musicData.map((music, index) => `
+    <div class="music-card">
+      <div class="music-cover" style="background-image: url('${music.cover || 'https://p2.music.126.net/4qT4x6xRbqnBXxGhvUL6XA==/109951173166375290.jpg'}'); background-size: cover; background-position: center;">
+        <div class="music-play-btn" onclick="playMusic(${index})">
+          <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z" fill="white"/></svg>
+        </div>
+      </div>
+      <div class="music-info">
+        <h3 class="music-title">${music.title}</h3>
+        <p class="music-artist">${music.artist}</p>
+        <p class="music-meta">${music.type} · ${music.duration}</p>
+        <p class="music-desc">${music.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+// ===== 播放音乐 =====
+function playMusic(index) {
+  const music = musicData[index];
+  if (music.url) {
+    window.open(music.url, '_blank');
+  } else {
+    alert('音乐文件待添加');
+  }
+}
+
+// ===== 预约作品数据 =====
+const upcomingData = [
+  {
+    title: '穿越十年后，我成了顶级财阀',
+    role: '即将上线',
+    tags: ['都市', '逆袭', '爽文'],
+    desc: '穿越十年后，我成了顶级财阀，看剧快人一步！',
+    poster: 'https://aka.doubaocdn.com/s/CSazP6gVyv',
+    url: 'https://novelquickapp.com/s/2qd_Q0E4kFA/'
+  }
+];
+function renderUpcoming() {
+  const grid = document.getElementById('upcomingGrid');
+  grid.innerHTML = upcomingData.map(work => `
+    <div class="upcoming-card" onclick="window.open('${work.url}', '_blank')" style="cursor:pointer;">
+      <img class="upcoming-poster" src="${work.poster}" alt="${work.title}" loading="lazy">
+      <div class="upcoming-badge">即将上线</div>
+      <h3 class="upcoming-title">${work.title}</h3>
+      <p class="upcoming-role">${work.role}</p>
+      <div class="upcoming-tags">${work.tags.map(t => '<span class="upcoming-tag">' + t + '</span>').join('')}</div>
+      <p class="upcoming-desc">${work.desc}</p>
+      <p class="upcoming-link">点击预约 &rarr;</p>
+    </div>
+  `).join('');
+}
+
+// ===== 渲染作品卡片 =====
+function renderWorks() {
+  const grid = document.getElementById('worksGrid');
+  const sorted = worksData;
+  grid.innerHTML = sorted.map((work) => {
+    const index = worksData.indexOf(work);
+    return `
+    <div class="work-card" onclick="openWork(${index})" style="cursor:pointer;">
+      ${work.hasPoster
+        ? `<img class="work-poster" src="${work.poster}" alt="${work.title}" loading="lazy">`
+        : `<div class="work-poster-placeholder">
+            <div class="work-poster-icon">&#9733;</div>
+            <div class="work-poster-title">${work.title}</div>
+          </div>`
+      }
+      <div class="work-info">
+        <h3 class="work-title">${work.title}</h3>
+        <div class="work-meta">
+          ${work.tags.map(t => `<span class="work-tag">${t}</span>`).join('')}
+        </div>
+        <p class="work-role">饰演：<span>${work.role}</span></p>
+        <p class="work-eps">${work.eps} · ${work.desc}</p>
+        <p class="work-date">上线：${work.date || '待更新'}</p>
+        <p class="work-link">红果短剧免费看 &rarr;</p>
+      </div>
+    </div>
+  `}).join('');
+}
+
+// ===== 红果短剧直链映射 =====
+const workUrls = {
+  '京夜复沦陷': 'https://novelquickapp.com/s/Db13RhLKw70/',
+  '闪婚后，神秘老公的身份藏不住了': 'https://novelquickapp.com/s/hcCKvbxTzSo/',
+  '云先生他陷进去了': 'https://novelquickapp.com/s/JDzpk4ht6mg/',
+  '蓄谋已久：闪婚老公暗恋我': 'https://novelquickapp.com/s/q27QsApsSU8/',
+  '大叔，闪婚了解一下': 'https://novelquickapp.com/s/fZMlZd0Um50/',
+  '大叔，闪婚了解一下2': 'https://novelquickapp.com/s/ghXxO2xwpVM/',
+  '宫先生今天追到老婆了吗': 'https://novelquickapp.com/s/8WNoF30_nQw/',
+  '结婚证是假的，苏小姐可以恋爱了': 'https://novelquickapp.com/s/uxcDuoiKYVc/',
+  '重生后太太成了傅总的贴身小挂件': 'https://novelquickapp.com/s/djAx6AFfwaw/',
+  '沈总，请签收你的小太阳': 'https://novelquickapp.com/s/aqWhEGV4i1A/',
+  '今天老公和我结婚了吗': 'https://novelquickapp.com/s/WUka5vcB0hg/',
+  '学渣的无限高考日': 'https://novelquickapp.com/s/CgMqG1nT54o/',
+  '吻落初雪时': 'https://novelquickapp.com/s/qktJpLyILY0/',
+  '我在现代有个恐龙乐园': 'https://novelquickapp.com/s/tIzgzbvUB0E/',
+  '穿越民国成僵尸，我带我儿七叔飞': 'https://novelquickapp.com/s/7TTEUBgA3tI/',
+  '契约读心甜妻：沉睡老公气醒了': 'https://novelquickapp.com/s/Gq5lN4Brd38/',
+  '三代新娘一罐糖': 'https://novelquickapp.com/s/dQVf7Ll4m98/',
+
+  '金牌外卖员，拒绝疏通下水道': 'https://novelquickapp.com/s/STgBfYOCO7k/',
+  '青梅吻唇角': 'https://novelquickapp.com/s/93ZJoCtaRXg/',
+  '玉芙蓉': 'https://novelquickapp.com/s/JPb8B4sS_s4/',
+  '这个反派太狂傲': 'https://novelquickapp.com/s/DDOBN5sAQUw/',
+  '学霸穿书学渣，我靠满分颠覆人生': 'https://novelquickapp.com/s/L4uML7IMa2c/',
+  '系统在手，逆天主母带飞全家': 'https://novelquickapp.com/s/VCPOU1s1jX4/',
+  '我无敌了你瞒着我干什么': 'https://novelquickapp.com/s/615CedBiYj0/',
+
+  '医途有风': 'https://novelquickapp.com/s/L0BPp9mSUtA/',
+  '我觉醒心动系统': 'https://novelquickapp.com/s/2jk2GlN4FtU/',
+  '医生给自己做手术，这很合理吧': 'https://novelquickapp.com/s/mTSpk5TML-Y/',
+  '老爸重返18岁，送给女儿的救赎': 'https://novelquickapp.com/s/NiJB7sZ1EnU/',
+  '系统通两界，一袋零食攻略美女公主': 'https://novelquickapp.com/s/xiI-U2hZjF8/',
+  '太公赐我系统，前妻小脸被打肿': 'https://novelquickapp.com/s/KdJlJ3DFs1I/',
+  '小青梅又奶又凶，轮椅少爷超宠她': 'https://novelquickapp.com/s/qDZiwx8It4E/',
+  '美女总裁被我骂惨了': 'https://novelquickapp.com/s/tl8wjfTeJIg/',};
+
+// ===== 打开作品链接 =====
+function openWork(index) {
+  const work = worksData[index];
+  const url = workUrls[work.title];
+  if (url) {
+    window.open(url, '_blank');
+  } else {
+    const searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(work.title + ' 短剧 在线观看');
+    window.open(searchUrl, '_blank');
+  }
+}
+
+// ===== 渲染角色卡片 =====
+// ===== 生日倒计时 =====
+function updateCountdown() {
+  const now = new Date();
+  const year = now.getFullYear();
+  let target = new Date(year, 2, 15, 0, 0, 0); // 3月15日（月份从0开始）
+  if (now > target) {
+    target = new Date(year + 1, 2, 15, 0, 0, 0);
+  }
+  const diff = target - now;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  document.getElementById('days').textContent = String(days).padStart(2, '0');
+  document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+  document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+}
+
+// ===== 社交平台跳转 =====
+function openSocial(platform) {
+  const urls = {
+    hongguo: 'https://novelquickapp.com/s/vh8J8kot54Y/',
+    douyin: 'https://v.douyin.com/pBxcIZp6rQo/',
+    weibo: 'https://weibo.com/u/5565914640',
+    xhs: 'https://xhslink.cn/m/5i9RDahDZI5'
+  };
+  if (urls[platform]) {
+    window.open(urls[platform], '_blank');
+  }
+}
+
+// ===== 导航高亮 =====
+function updateActiveNav() {
+  const sections = ['home', 'about', 'social', 'works', 'upcoming', 'music', 'mihua', 'xiaohebao', 'xiaozhitiao'];
+  const scrollPos = window.scrollY + 120;
+  let current = 'home';
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollPos) {
+      current = id;
+    }
+  }
+  document.querySelectorAll('.side-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.section === current);
+  });
+}
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+  // 导航栏点击平滑跳转（只绑定一次）
+  document.querySelectorAll('.side-nav a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelectorAll('.side-nav a').forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+        history.replaceState(null, '', '#' + targetId);
+      }
+    });
+  });
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  try { renderWorks(); } catch(e) { console.error('renderWorks error:', e); }
+  try { renderUpcoming(); } catch(e) { console.error('renderUpcoming error:', e); }
+  try { renderMusic(); } catch(e) { console.error('renderMusic error:', e); }
+  window.addEventListener('scroll', updateActiveNav);
+  updateActiveNav();
+});
+
+// 搜索功能
+function getAllPosts() {
+  const posts = [];
+  // 收集小禾包栏目所有平台帖子（抖音+小红书+微博）
+  document.querySelectorAll('.xiaohebao-container .post-link').forEach(link => {
+    const title = link.querySelector('.post-title');
+    const date = link.querySelector('.post-date');
+    const platformSection = link.closest('.platform-section');
+    const platform = platformSection ? 
+      platformSection.querySelector('.platform-title').textContent.trim() : '未知';
+    if (title && date) {
+      posts.push({
+        title: title.textContent,
+        date: date.textContent,
+        url: link.href,
+        platform: platform
+      });
+    }
+  });
+  return posts;
+}
+
+function searchPosts() {
+  const query = document.getElementById('postSearch').value.trim().toLowerCase();
+  const resultsDiv = document.getElementById('searchResults');
+  
+  if (!query) {
+    resultsDiv.style.display = 'none';
+    return;
+  }
+  
+  const allPosts = getAllPosts();
+  const filtered = allPosts.filter(post => 
+    post.title.toLowerCase().includes(query) || 
+    post.date.includes(query) ||
+    post.platform.toLowerCase().includes(query)
+  );
+  
+  if (filtered.length === 0) {
+    resultsDiv.innerHTML = '<div class="search-no-result">没有找到相关作品</div>';
+  } else {
+    resultsDiv.innerHTML = filtered.slice(0, 20).map(post => 
+      '<a class="search-result-item" href="' + post.url + '" target="_blank" rel="noopener noreferrer">' +
+        '<div class="search-result-title">' + escapeHtml(post.title) + '</div>' +
+        '<div class="search-result-meta">' +
+          '<span class="search-result-platform">' + post.platform + '</span>' +
+          '<span>' + post.date + '</span>' +
+        '</div>' +
+      '</a>'
+    ).join('');
+    if (filtered.length > 20) {
+      resultsDiv.innerHTML += '<div class="search-no-result">仅显示前20条，共' + filtered.length + '条结果</div>';
+    }
+  }
+  resultsDiv.style.display = 'block';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// 点击页面其他地方关闭搜索结果
+document.addEventListener('click', function(e) {
+  const searchContainer = document.querySelector('.search-container');
+  if (searchContainer && !searchContainer.contains(e.target)) {
+    document.getElementById('searchResults').style.display = 'none';
+  }
+});
+
+// 导航点击显式跳转，修复点两下问题
+document.querySelectorAll('.side-nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('data-section');
+    const targetEl = document.getElementById(targetId);
+    if (targetEl) {
+      e.preventDefault();
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // 更新导航高亮
+      document.querySelectorAll('.side-nav a').forEach(a => a.classList.remove('active'));
+      this.classList.add('active');
+      // 更新hash
+      history.replaceState(null, '', '#' + targetId);
+    }
+  });
+});
+
+
+// 小纸条功能
+const notesData = {
+  cat: [
+    'https://aka.doubaocdn.com/s/B7Cdb58HEr',
+    'https://aka.doubaocdn.com/s/4FEMdDRjBX',
+    'https://aka.doubaocdn.com/s/6lOUif4U2t',
+    'https://aka.doubaocdn.com/s/qru5uI16Tx',
+    'https://aka.doubaocdn.com/s/GxK5QlCPDd'
+  ],
+  pinky: [
+    'https://aka.doubaocdn.com/s/8ZUTMwSKUN',
+    'https://aka.doubaocdn.com/s/riQagL7Hvh',
+    'https://aka.doubaocdn.com/s/QOsltsMiyn',
+    'https://aka.doubaocdn.com/s/YdidumRx5t',
+    'https://aka.doubaocdn.com/s/9ZuahADzCm',
+    'https://aka.doubaocdn.com/s/I3lgUrSJNG',
+    'https://aka.doubaocdn.com/s/dKEUNtr0bA',
+    'https://aka.doubaocdn.com/s/6YZnItJArg',
+    'https://aka.doubaocdn.com/s/oUsnT1EqUj',
+    'https://aka.doubaocdn.com/s/q0DtBf9zxX',
+    'https://aka.doubaocdn.com/s/yQNd9bJWCP',
+    'https://aka.doubaocdn.com/s/vnYsKNUxur',
+    'https://aka.doubaocdn.com/s/zuNIE0fHbE',
+    'https://aka.doubaocdn.com/s/3wUR3OBm5V',
+    'https://aka.doubaocdn.com/s/5Gt17oAqfG',
+    'https://aka.doubaocdn.com/s/OjBzZkmgAR',
+    'https://aka.doubaocdn.com/s/WGrY4zLPY1',
+    'https://aka.doubaocdn.com/s/Vd9DTqDOib',
+    'https://aka.doubaocdn.com/s/xCwcj3VJXe',
+    'https://aka.doubaocdn.com/s/H440ofXrB5'
+  ],
+  seven: [
+    'https://aka.doubaocdn.com/s/mlk0ERCcrA'
+  ],
+  cupid: [
+    'https://aka.doubaocdn.com/s/DCc35wDMNU',
+    'https://aka.doubaocdn.com/s/xJ2JISP2aL',
+    'https://aka.doubaocdn.com/s/QJ0Z4eUisf',
+    'https://aka.doubaocdn.com/s/j2M1OIV201',
+    'https://aka.doubaocdn.com/s/XtbqwoNVDE',
+    'https://aka.doubaocdn.com/s/ncYyAYxbH5',
+    'https://aka.doubaocdn.com/s/dOC2Yp9MOL',
+    'https://aka.doubaocdn.com/s/JIGNQcKUM1',
+    'https://aka.doubaocdn.com/s/1rBBZbnbJJ',
+    'https://aka.doubaocdn.com/s/fV2sPS3UYb',
+    'https://aka.doubaocdn.com/s/iHMlCg3i49',
+    'https://aka.doubaocdn.com/s/P2iLU1SpC5'
+  ],
+  cheek: [
+    'https://aka.doubaocdn.com/s/eWXNzSUi9C',
+    'https://aka.doubaocdn.com/s/nGmNmBB1xn',
+    'https://aka.doubaocdn.com/s/PBCTBiZV9d',
+    'https://aka.doubaocdn.com/s/FUZ0tsuEm3',
+    'https://aka.doubaocdn.com/s/oNVPcYwq3A',
+    'https://aka.doubaocdn.com/s/VVC42mmXV1'
+  ],
+  princess: [
+    'https://aka.doubaocdn.com/s/qn9Y8XYlBF',
+    'https://aka.doubaocdn.com/s/ge0oAtgOkA',
+    'https://aka.doubaocdn.com/s/32SoEJMmcf',
+    'https://aka.doubaocdn.com/s/pXzSQoR52a',
+    'https://aka.doubaocdn.com/s/K74Wh43zES',
+    'https://aka.doubaocdn.com/s/BRVqGQigHa',
+    'https://aka.doubaocdn.com/s/BZ5IQnwG54',
+    'https://aka.doubaocdn.com/s/FMDlWG0sB9',
+    'https://aka.doubaocdn.com/s/2iBoUunrvb',
+    'https://aka.doubaocdn.com/s/9KbCr7QsrJ',
+    'https://aka.doubaocdn.com/s/x3jKPaCvUH',
+    'https://aka.doubaocdn.com/s/rIVY4NP61f',
+    'https://aka.doubaocdn.com/s/f7URsUZVJU',
+    'https://aka.doubaocdn.com/s/mpwQ2jQiw1',
+    'https://aka.doubaocdn.com/s/hLVNXplWMI',
+    'https://aka.doubaocdn.com/s/WLPmPOBjbG',
+    'https://aka.doubaocdn.com/s/Jmr3gjZonc',
+    'https://aka.doubaocdn.com/s/aK88idpOVG',
+    'https://aka.doubaocdn.com/s/Us9aw9iD4m',
+    'https://aka.doubaocdn.com/s/RT8WuPYnMf',
+    'https://aka.doubaocdn.com/s/wczTVHnFIL',
+    'https://aka.doubaocdn.com/s/6ha83yimFL',
+    'https://aka.doubaocdn.com/s/fFIDrbnLUr',
+    'https://aka.doubaocdn.com/s/nHRrOkoEaV',
+    'https://aka.doubaocdn.com/s/3VAWcdhG7U',
+    'https://aka.doubaocdn.com/s/UxPPBXHV9k',
+    'https://aka.doubaocdn.com/s/HDIyAD35VC'
+  ],
+  pinch: [
+    'https://aka.doubaocdn.com/s/YOa33gh9xV',
+    'https://aka.doubaocdn.com/s/qfzs3yd4fN',
+    'https://aka.doubaocdn.com/s/vKKFhNsz1x',
+    'https://aka.doubaocdn.com/s/NNPCZSkp9o',
+    'https://aka.doubaocdn.com/s/gh19aRdsab',
+    'https://aka.doubaocdn.com/s/RAvAuq4O4c',
+    'https://aka.doubaocdn.com/s/hKzhJHjUQu',
+    'https://aka.doubaocdn.com/s/ogSNDSAfUE',
+    'https://aka.doubaocdn.com/s/UbpjQEiqig'
+  ],
+  wink: [
+    'https://aka.doubaocdn.com/s/oI26sZTDHf',
+    'https://aka.doubaocdn.com/s/nAEfCktkhZ',
+    'https://aka.doubaocdn.com/s/iVSAU6Ng7y',
+    'https://aka.doubaocdn.com/s/JiDxHfSgFB',
+    'https://aka.doubaocdn.com/s/h9JXnaxgg6'
+  ]
+};
+
+const emotionNames = {
+  cat: '🐱 小猫耳朵',
+  pinky: '🤙 拉勾',
+  seven: '🤟 比7',
+  bear: '⭐️',
+  dog: '🥰 脸颊比心',
+  princess: '🐱 米花',
+  pinch: '🤏 捏脸',
+  wink: '😉 wink'
+};
+
+let currentEmotion = 'cat';
+
+// 情绪标签点击
+document.addEventListener('DOMContentLoaded', function() {
+  // 导航栏点击平滑跳转（只绑定一次）
+  document.querySelectorAll('.side-nav a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelectorAll('.side-nav a').forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+        history.replaceState(null, '', '#' + targetId);
+      }
+    });
+  });
+  
+  const tags = document.querySelectorAll('.note-emotion-btn');
+  tags.forEach(tag => {
+    tag.addEventListener('click', function() {
+      tags.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      currentEmotion = this.dataset.emotion;
+    });
+  });
+});
+
+// 抽纸条
+function drawNote() {
+  const notes = notesData[currentEmotion];
+  if (!notes || notes.length === 0) {
+    alert('该分类暂无图片，敬请期待~');
+    return;
+  }
+  const randomNote = notes[Math.floor(Math.random() * notes.length)];
+  const resultDiv = document.getElementById('noteResult');
+  const emotionSpan = document.getElementById('noteEmotion');
+  const textP = document.getElementById('noteText');
+  const dateSpan = document.getElementById('noteDate');
+  
+  emotionSpan.textContent = emotionNames[currentEmotion];
+  // dateSpan.textContent = new Date().toLocaleDateString('zh-CN');
+  
+  // 流畅切换：先淡出，再淡入
+  if (resultDiv.style.display === 'block') {
+    resultDiv.style.opacity = '0';
+    resultDiv.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      textP.innerHTML = '<img src="' + randomNote + '" alt="小纸条" style="width:100%;max-width:300px;max-height:400px;object-fit:cover;object-position:50% 25%;border-radius:12px;display:block;margin:0 auto;background:#FFF0F5;">';
+      resultDiv.style.opacity = '1';
+      resultDiv.style.transform = 'scale(1)';
+    }, 200);
+  } else {
+    textP.innerHTML = '<img src="' + randomNote + '" alt="小纸条" style="width:100%;max-width:300px;max-height:400px;object-fit:cover;object-position:50% 25%;border-radius:12px;display:block;margin:0 auto;background:#FFF0F5;">';
+    resultDiv.style.display = 'block';
+    resultDiv.style.opacity = '0';
+    resultDiv.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      resultDiv.style.opacity = '1';
+      resultDiv.style.transform = 'scale(1)';
+    }, 50);
+  }
+  
+  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// 使用说明弹窗
+function showUsageModal() {
+  document.getElementById('usageModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function hideUsageModal() {
+  document.getElementById('usageModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+
+</script>
+</body>
+</html>
