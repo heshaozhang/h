@@ -2199,9 +2199,9 @@ body {
   * {
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    
+    transition: none !important;
   }
   html {
     scroll-behavior: auto !important;
@@ -2213,8 +2213,8 @@ body {
   }
   /* 延迟渲染不可见内容 */
   .section {
-    content-visibility: auto;
-    contain-intrinsic-size: 1000px;
+    
+    
   }
   /* 移除所有阴影和圆角（手机端耗性能） */
   .work-card, .music-card, .social-card, .mihua-video-item, .mihua-photo-item {
@@ -2252,7 +2252,7 @@ body {
   }
   /* 图片优化 */
   img {
-    content-visibility: auto;
+    
   }
 }
 
@@ -2813,7 +2813,7 @@ body {
 </section>
 
 <!-- ===== 小禾包 ===== -->
-<section class="section xiaohebao" id="xiaohebao" style="padding-bottom: 100px; scroll-margin-top: 80px;">
+<section class="section xiaohebao" id="xiaohebao" style="padding-bottom: 100px;">
   
   
 
@@ -4138,7 +4138,7 @@ body {
       </div>
   </div>
 </section>
-<section class="section xiaozhitiao" id="xiaozhitiao" style="padding-bottom: 100px; scroll-margin-top: 80px;">
+<section class="section xiaozhitiao" id="xiaozhitiao" style="padding-bottom: 100px;">
   <div class="xiaozhitiao-container">
     <div class="note-box">
       <div class="note-box-header">
